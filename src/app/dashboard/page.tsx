@@ -12,7 +12,7 @@ export default function DashboardPage() {
   const { currentGift } = useGiftBuilderStore();
 
   return (
-    <AuroraBackground themeId="secret">
+    <AuroraBackground themeId="cute">
       <div className="flex min-h-screen flex-col items-center p-6 pt-12 max-w-5xl mx-auto w-full">
         {/* Navigation Header */}
         <div className="flex w-full items-center justify-between mb-8">

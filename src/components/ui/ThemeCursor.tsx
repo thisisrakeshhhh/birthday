@@ -12,10 +12,10 @@ interface Particle {
   emoji: string;
 }
 
-export const ThemeCursor: React.FC<{ themeId?: ThemeId }> = ({ themeId = 'secret' }) => {
+export const ThemeCursor: React.FC<{ themeId?: ThemeId }> = ({ themeId = 'cute' }) => {
   const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
   const [particles, setParticles] = useState<Particle[]>([]);
-  const theme = THEME_REGISTRY[themeId] || THEME_REGISTRY.secret;
+  const theme = THEME_REGISTRY[themeId] || THEME_REGISTRY.cute;
 
   useEffect(() => {
     let count = 0;

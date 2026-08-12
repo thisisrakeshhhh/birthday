@@ -24,16 +24,16 @@ import {
 import { triggerHaptic } from '@/lib/utils';
 
 const THEMES: ThemeId[] = [
-  'secret',
-  'crush',
-  'chaotic',
-  'romantic',
-  'nostalgia',
-  'delulu',
-  'main_character',
-  'bro_code',
-  'midnight',
-  'pink_crush',
+  'galaxy',
+  'anime',
+  'cute',
+  'minimal',
+  'luxury',
+  'nature',
+  'flowers',
+  'retro',
+  'neon',
+  'scrapbook',
 ];
 
 export default function CreatorPage() {

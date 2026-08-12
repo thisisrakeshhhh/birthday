@@ -7,7 +7,7 @@ import { Shield, DollarSign, Users, Gift, TrendingUp, Layers } from 'lucide-reac
 
 export default function AdminPage() {
   return (
-    <AuroraBackground themeId="secret">
+    <AuroraBackground themeId="luxury">
       <div className="flex min-h-screen flex-col items-center p-6 pt-12 max-w-5xl mx-auto w-full text-slate-100">
         <div className="flex w-full items-center justify-between mb-8">
           <Link href="/" className="font-serif text-lg font-bold text-white flex items-center gap-2">

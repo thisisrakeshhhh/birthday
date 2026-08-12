@@ -3,11 +3,11 @@
 import React from 'react';
 import { useGiftBuilderStore } from '@/features/builder/store';
 import { THEME_REGISTRY } from '@/features/themes/tokens';
-import { Sparkles, MapPin, Heart, Music } from 'lucide-react';
+import { Sparkles, MapPin, Heart, Music, Lock, ShieldCheck, UserCheck } from 'lucide-react';
 
 export const PhonePreview: React.FC = () => {
   const { currentGift } = useGiftBuilderStore();
-  const theme = THEME_REGISTRY[currentGift.themeId] || THEME_REGISTRY.secret;
+  const theme = THEME_REGISTRY[currentGift.themeId] || THEME_REGISTRY.cute;
 
   return (
     <div className="relative mx-auto w-full max-w-[320px] aspect-[9/18] rounded-[48px] border-[10px] border-slate-900 bg-slate-950 p-2 shadow-2xl overflow-hidden select-none">
@@ -20,8 +20,14 @@ export const PhonePreview: React.FC = () => {
       >
         {/* Header Title */}
         <div className="text-center">
-          <span className="text-[10px] uppercase font-bold text-pink-400 tracking-wider">
-            MemoryBloom Preview
+          <span className="text-[10px] uppercase font-bold text-pink-400 tracking-wider flex items-center justify-center gap-1">
+            {currentGift.mediaMode === 'avatars' ? (
+              <span className="flex items-center gap-1 text-emerald-300 font-extrabold">
+                <ShieldCheck className="h-3 w-3" /> 100% Private Avatar Mode
+              </span>
+            ) : (
+              <span>MemoryBloom Preview</span>
+            )}
           </span>
           <h2 className="font-serif text-xl font-bold text-white leading-tight">
             For {currentGift.receiverName || 'Someone Special'}

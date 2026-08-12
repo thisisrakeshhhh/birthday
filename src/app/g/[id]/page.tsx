@@ -14,7 +14,8 @@ import { MidnightDropLock } from '@/features/receiver/MidnightDropLock';
 import { StoryProgressStream } from '@/features/receiver/StoryProgressStream';
 import { SpotifyGenZPlayer } from '@/features/receiver/SpotifyGenZPlayer';
 import { THEME_REGISTRY } from '@/features/themes/tokens';
-import { Sparkles, Music, Heart, MessageCircle, Copy, Check, Wand2 } from 'lucide-react';
+import { launchDiwaliFirecrackers } from '@/components/ui/DiwaliFirecrackers';
+import { Sparkles, Music, Heart, MessageCircle, Copy, Check, Wand2, Flame } from 'lucide-react';
 import { triggerHaptic } from '@/lib/utils';
 import confetti from 'canvas-confetti';
 
@@ -35,6 +36,11 @@ export default function ReceiverExperiencePage() {
       spread: 60,
       origin: { y: 0.8 },
     });
+  };
+
+  const handleFirecrackers = () => {
+    triggerHaptic('heavy');
+    launchDiwaliFirecrackers();
   };
 
   const handleWhatsAppShare = () => {
@@ -74,8 +80,16 @@ export default function ReceiverExperiencePage() {
 
   return (
     <AuroraBackground themeId={currentGift.themeId}>
-      {/* Floating Header WhatsApp Share */}
+      {/* Floating Header Actions */}
       <div className="fixed top-4 right-4 z-40 flex items-center gap-2">
+        <button
+          onClick={handleFirecrackers}
+          className="flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-500 to-rose-500 px-3.5 py-2 text-xs font-extrabold text-white shadow-lg border border-amber-300/40 hover:scale-105 transition-transform min-h-[44px]"
+        >
+          <Sparkles className="h-4 w-4" />
+          <span>Firecrackers 🎆</span>
+        </button>
+
         <button
           onClick={handleWhatsAppShare}
           className="flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-2 text-xs font-bold text-white shadow-lg border border-emerald-400/40 hover:bg-emerald-500 transition-colors min-h-[44px]"

@@ -6,6 +6,8 @@ import { triggerHaptic } from '@/lib/utils';
 import { Flame, Sparkles, Heart } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
+import { launchDiwaliFirecrackers } from '@/components/ui/DiwaliFirecrackers';
+
 export const InteractiveCake: React.FC<{ receiverName: string }> = ({ receiverName }) => {
   const [candlesLit, setCandlesLit] = useState<boolean[]>([true, true, true]);
   const [isBlownOut, setIsBlownOut] = useState(false);
@@ -29,6 +31,7 @@ export const InteractiveCake: React.FC<{ receiverName: string }> = ({ receiverNa
 
   const handleAllBlown = () => {
     setIsBlownOut(true);
+    launchDiwaliFirecrackers();
     confetti({
       particleCount: 100,
       spread: 80,

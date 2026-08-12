@@ -7,6 +7,8 @@ import { Gift, Heart, Sparkles, CheckCircle2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import Link from 'next/link';
 
+import { launchDiwaliFirecrackers } from '@/components/ui/DiwaliFirecrackers';
+
 export const GiftWrappingBox: React.FC<{ giftId?: string }> = ({ giftId = 'gift_demo' }) => {
   const [step, setStep] = useState<number>(1);
 
@@ -22,8 +24,9 @@ export const GiftWrappingBox: React.FC<{ giftId?: string }> = ({ giftId = 'gift_
     }, 2600);
 
     const t3 = setTimeout(() => {
-      setStep(4); // Wax Seal stamps
+      setStep(4); // Wax Seal stamps & Diwali Firecrackers burst
       triggerHaptic('success');
+      launchDiwaliFirecrackers();
       confetti({
         particleCount: 100,
         spread: 80,

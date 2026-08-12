@@ -77,28 +77,28 @@ export default function LandingPage() {
   const [selectedVibe, setSelectedVibe] = useState<VibeCategory>('roast');
 
   return (
-    <AuroraBackground themeId="soft">
+    <AuroraBackground themeId="midnight">
       {/* Navigation Header */}
-      <header className="fixed top-0 left-0 right-0 z-40 px-6 py-4 backdrop-blur-md bg-slate-950/40 border-b border-white/10 flex items-center justify-between">
+      <header className="fixed top-0 left-0 right-0 z-40 px-6 py-4 backdrop-blur-md bg-slate-950/80 border-b border-white/10 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 font-serif text-xl font-bold text-white tracking-tight">
           <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 text-white shadow-md">
             🌸
           </span>
-          <span>MemoryBloom</span>
+          <span className="text-white drop-shadow-sm">MemoryBloom</span>
         </Link>
 
         <div className="hidden sm:flex items-center gap-6 text-sm font-medium">
-          <a href="#how-it-works" className="text-slate-300 hover:text-white transition-colors">
+          <a href="#how-it-works" className="text-slate-200 hover:text-white transition-colors">
             How It Works
           </a>
-          <a href="#roast" className="text-slate-300 hover:text-white transition-colors">
+          <a href="#roast" className="text-slate-200 hover:text-white transition-colors">
             Birthday Roast 💀
           </a>
-          <a href="#pricing" className="text-slate-300 hover:text-white transition-colors">
+          <a href="#pricing" className="text-slate-200 hover:text-white transition-colors">
             Pricing
           </a>
           <Link href="/express">
-            <MagneticButton variant="gold" className="py-2 px-5 text-sm">
+            <MagneticButton variant="gold" className="py-2 px-5 text-sm text-slate-950 font-bold">
               Make One Free ✨
             </MagneticButton>
           </Link>
@@ -106,12 +106,12 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative flex min-h-screen flex-col items-center justify-center px-6 pt-24 text-center select-none">
+      <section className="relative flex min-h-screen flex-col items-center justify-center px-6 pt-28 text-center select-none">
         {/* Gen-Z Slogan Badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 rounded-full border border-pink-400/40 bg-pink-500/10 px-4 py-1.5 text-xs font-bold text-pink-300 backdrop-blur-md mb-6"
+          className="inline-flex items-center gap-2 rounded-full border border-pink-500/60 bg-pink-500/20 px-4.5 py-2 text-xs font-extrabold text-pink-200 backdrop-blur-md mb-6 shadow-lg shadow-pink-500/20"
         >
           <Sparkles className="h-4 w-4 text-pink-400 animate-spin" />
           <span>Your boring birthday text era is over.</span>
@@ -122,10 +122,10 @@ export default function LandingPage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="font-serif text-4xl sm:text-7xl lg:text-8xl font-bold tracking-tight text-white max-w-5xl leading-[1.1] mb-6"
+          className="font-serif text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight text-white max-w-5xl leading-[1.1] mb-6 drop-shadow-2xl"
         >
           Your &apos;Happy Birthday ❤️&apos; text{' '}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-300 to-amber-300">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-300 to-amber-300 drop-shadow-lg">
             could never.
           </span>
         </motion.h1>
@@ -134,7 +134,7 @@ export default function LandingPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-lg sm:text-2xl text-slate-300 max-w-2xl font-sans font-light mb-10 leading-relaxed"
+          className="text-lg sm:text-2xl text-slate-200 max-w-2xl font-sans font-medium mb-10 leading-relaxed drop-shadow-md"
         >
           Not a birthday wish. A whole experience. Turn photos, memories, music and inside jokes into a surprise they&apos;ll actually remember.
         </motion.p>

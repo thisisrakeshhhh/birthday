@@ -253,7 +253,7 @@ export default function LandingPage() {
                 <h3 className="text-2xl font-bold text-white">FREE Experience</h3>
                 <span className="text-xs font-bold text-slate-400 line-through">₹499 value</span>
               </div>
-              <p className="text-xs text-slate-300 mt-1">Make them smile in 60 seconds.</p>
+              <p className="text-xs font-bold text-emerald-300 mt-1">Make them smile. 😊</p>
 
               <div className="my-6">
                 <span className="text-5xl font-serif font-bold text-white">₹0</span>
@@ -262,7 +262,7 @@ export default function LandingPage() {
 
               <ul className="space-y-3 text-xs text-slate-300 font-medium">
                 <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" /> 5 Memory Photos
+                  <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" /> 5 Memory Photos / Avatars
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" /> Personalized Birthday Message
@@ -299,8 +299,8 @@ export default function LandingPage() {
                 </h3>
                 <span className="text-xs font-bold text-slate-400 line-through">₹1,599 value</span>
               </div>
-              <p className="text-xs text-pink-300 mt-1 font-medium">
-                Make it unreasonably personal.
+              <p className="text-xs font-bold text-amber-300 mt-1">
+                Make them remember it. 🥹✨
               </p>
 
               <div className="my-6 flex items-baseline gap-2">

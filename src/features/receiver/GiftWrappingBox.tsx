@@ -3,14 +3,16 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { triggerHaptic } from '@/lib/utils';
-import { Gift, Heart, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Gift, Heart, Sparkles, CheckCircle2, MessageCircle, Copy, Check, BarChart3, Eye } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import Link from 'next/link';
-
+import { useGiftBuilderStore } from '@/features/builder/store';
 import { launchDiwaliFirecrackers } from '@/components/ui/DiwaliFirecrackers';
 
 export const GiftWrappingBox: React.FC<{ giftId?: string }> = ({ giftId = 'gift_demo' }) => {
   const [step, setStep] = useState<number>(1);
+  const [copied, setCopied] = useState(false);
+  const { currentGift } = useGiftBuilderStore();
 
   useEffect(() => {
     const t1 = setTimeout(() => {
@@ -40,6 +42,24 @@ export const GiftWrappingBox: React.FC<{ giftId?: string }> = ({ giftId = 'gift_
       clearTimeout(t3);
     };
   }, []);
+
+  const handleWhatsAppShare = () => {
+    triggerHaptic('success');
+    const fullUrl = `${window.location.origin}/g/${currentGift.id || giftId}`;
+    const shareText = encodeURIComponent(
+      currentGift.whatsappShareText ||
+        `Yo ${currentGift.receiverName || 'there'}, I made a birthday surprise for you 👀 Don't open this around other people 😂👇 ${fullUrl}`
+    );
+    window.open(`https://api.whatsapp.com/send?text=${shareText}`, '_blank');
+  };
+
+  const handleCopyLink = () => {
+    triggerHaptic('light');
+    const fullUrl = `${window.location.origin}/g/${currentGift.id || giftId}`;
+    navigator.clipboard.writeText(fullUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center p-6 text-center text-white overflow-hidden bg-slate-950">
@@ -72,9 +92,7 @@ export const GiftWrappingBox: React.FC<{ giftId?: string }> = ({ giftId = 'gift_
             animate={{ scale: 1, opacity: 1 }}
             className="relative flex h-full w-full items-center justify-center"
           >
-            {/* Horizontal Ribbon */}
             <div className="absolute h-8 w-full bg-pink-600/90 shadow-md border-y border-pink-300" />
-            {/* Vertical Ribbon */}
             <div className="absolute w-8 h-full bg-pink-600/90 shadow-md border-x border-pink-300" />
             <Gift className="relative z-10 h-16 w-16 text-amber-100 animate-bounce" />
           </motion.div>
@@ -109,19 +127,49 @@ export const GiftWrappingBox: React.FC<{ giftId?: string }> = ({ giftId = 'gift_
         )}
       </div>
 
-      {/* Action Button once Wrapped */}
+      {/* Action Buttons once Wrapped */}
       {step === 4 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-8 flex flex-col items-center gap-4"
+          className="mt-8 flex flex-col items-center gap-4 w-full max-w-md"
         >
+          {/* 1-Tap WhatsApp Share */}
+          <button
+            onClick={handleWhatsAppShare}
+            className="flex items-center justify-center gap-2.5 rounded-full bg-emerald-600 px-8 py-4 text-base font-extrabold text-white shadow-xl hover:bg-emerald-500 hover:scale-105 transition-all w-full min-h-[44px]"
+          >
+            <MessageCircle className="h-5 w-5 fill-white" />
+            <span>Send to {currentGift.receiverName || 'Recipient'} on WhatsApp 💚</span>
+          </button>
+
+          <div className="grid grid-cols-2 gap-3 w-full">
+            {/* Copy Link Button */}
+            <button
+              onClick={handleCopyLink}
+              className="flex items-center justify-center gap-2 rounded-full bg-white/10 px-4 py-3 text-xs font-bold text-slate-200 border border-white/20 hover:bg-white/20 transition-colors min-h-[44px]"
+            >
+              {copied ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
+              <span>{copied ? 'Link Copied!' : 'Copy Magic Link'}</span>
+            </button>
+
+            {/* Sender Dashboard Analytics */}
+            <Link
+              href="/dashboard"
+              className="flex items-center justify-center gap-2 rounded-full bg-purple-600/30 px-4 py-3 text-xs font-bold text-purple-200 border border-purple-400/40 hover:bg-purple-600/40 transition-colors min-h-[44px]"
+            >
+              <BarChart3 className="h-4 w-4 text-purple-300" />
+              <span>Sender Dashboard 📊</span>
+            </Link>
+          </div>
+
+          {/* Preview Experience Link */}
           <Link
             href={`/g/${giftId}`}
-            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 px-8 py-4 text-base font-bold text-white shadow-xl shadow-pink-500/40 hover:scale-105 transition-transform min-h-[44px]"
+            className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-pink-300 transition-colors pt-2"
           >
-            <Sparkles className="h-5 w-5" />
-            Preview Receiver Experience
+            <Eye className="h-4 w-4" />
+            <span>Preview Receiver Experience →</span>
           </Link>
         </motion.div>
       )}

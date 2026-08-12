@@ -1,6 +1,6 @@
-import { AIStoryRequest, AIStoryResponse, ThemeId, VibeCategory } from '@/types/gift';
+import { AIStoryRequest, AIStoryResponse, ThemeId } from '@/types/gift';
 
-export function runAIMemoryDirector(req: AIStoryRequest): AIStoryResponse {
+export async function runAIMemoryDirector(req: AIStoryRequest): Promise<AIStoryResponse> {
   const name = req.receiverName || 'my favorite human';
   const sender = req.senderName || 'Me';
 
@@ -44,7 +44,60 @@ export function runAIMemoryDirector(req: AIStoryRequest): AIStoryResponse {
     conversationalIntro = "it's giving soulmate energy 🥀✨";
   }
 
-  // Inside Joke AI Roast Caption
+  const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+
+  // Live Gemini Flash API Integration
+  if (apiKey) {
+    try {
+      const prompt = `You are the MemoryBloom Gen-Z AI Memory Director. Write a personalized birthday surprise experience for "${name}" from "${sender}".
+Relationship: ${req.relationship}.
+Vibe: ${req.vibe}.
+Funny Memory / Inside Joke: ${req.funnyMemory || 'none'}.
+Love Detail / Personality: ${req.loveDetail || req.personality || 'none'}.
+
+Return strict JSON format with keys:
+- generatedLetter: (2-3 paragraphs of warm, witty Gen-Z birthday letter)
+- insideJokeRoast: (1 line funny roast or caption)
+- roastIntro: (funny 1 line roast intro)
+- roastOutro: (1 line roast outro)
+- whatsappShareText: (short viral WhatsApp share line for recipient)`;
+
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { responseMimeType: 'application/json' },
+          }),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (rawText) {
+          const parsed = JSON.parse(rawText);
+          return {
+            themeId,
+            conversationalIntro,
+            generatedLetter: parsed.generatedLetter || `Happy Birthday ${name}! 🎉`,
+            insideJokeRoast: parsed.insideJokeRoast || `bro thought they were the main character here 💀`,
+            closingMessage: `Made with magic for ${name} by ${sender} ✨`,
+            roastIntro: parsed.roastIntro || "Okay... we've reviewed the evidence 💀",
+            roastOutro: parsed.roastOutro || "Okay okay... we love you ❤️",
+            whatsappShareText: parsed.whatsappShareText || `Yo ${name}, I made a tiny internet universe for your birthday 👀 Don't open this around other people 😂👇`,
+            suggestedChapters: ['The Evidence 📸', 'Unfiltered Moments 🍿', 'Why We Love You ❤️'],
+          };
+        }
+      }
+    } catch (err) {
+      console.warn('Gemini API fetch fallback to local Gen-Z engine:', err);
+    }
+  }
+
+  // Fallback Gen-Z Engine (Zero API Key Failure)
   let insideJokeRoast = '';
   if (req.insideJokeInput) {
     insideJokeRoast = `And somehow this person still thinks they're coordinated 💀 ("${req.insideJokeInput}")`;
@@ -54,7 +107,6 @@ export function runAIMemoryDirector(req: AIStoryRequest): AIStoryResponse {
     insideJokeRoast = `bro thought they were the main character here 💀`;
   }
 
-  // Gen-Z Copy Templates
   let generatedLetter = '';
   let closingMessage = '';
   let roastIntro = "Okay... we've reviewed the evidence 💀";

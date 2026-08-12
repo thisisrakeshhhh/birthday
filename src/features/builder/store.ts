@@ -252,12 +252,12 @@ export const useGiftBuilderStore = create<BuilderState>()(
           };
         }),
 
-      generateWithAiDirector: () => {
+      generateWithAiDirector: async () => {
         const state = get();
         set({ isAiGenerating: true });
 
-        setTimeout(() => {
-          const res = runAIMemoryDirector({
+        try {
+          const res = await runAIMemoryDirector({
             relationship: state.currentGift.relationship,
             vibe: state.currentGift.vibe,
             receiverName: state.currentGift.receiverName,
@@ -292,7 +292,9 @@ export const useGiftBuilderStore = create<BuilderState>()(
               ],
             },
           }));
-        }, 1000);
+        } catch (e) {
+          set({ isAiGenerating: false });
+        }
       },
 
       nextStep: () => set((state) => ({ currentStep: Math.min(state.currentStep + 1, 5) })),

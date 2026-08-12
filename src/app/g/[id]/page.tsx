@@ -13,19 +13,27 @@ import { InteractiveCake } from '@/features/receiver/InteractiveCake';
 import { MidnightDropLock } from '@/features/receiver/MidnightDropLock';
 import { StoryProgressStream } from '@/features/receiver/StoryProgressStream';
 import { SpotifyGenZPlayer } from '@/features/receiver/SpotifyGenZPlayer';
+import { AnonymousMysteryFlow } from '@/features/receiver/AnonymousMysteryFlow';
+import { SituationshipQuiz } from '@/features/receiver/SituationshipQuiz';
+import { GroupChatCouncil } from '@/features/receiver/GroupChatCouncil';
 import { THEME_REGISTRY } from '@/features/themes/tokens';
-import { Sparkles, Music, Heart, MessageCircle, Copy, Check, Wand2 } from 'lucide-react';
+import { Sparkles, Music, Heart, MessageCircle, Copy, Check, Wand2, ArrowRight } from 'lucide-react';
 import { triggerHaptic } from '@/lib/utils';
 import confetti from 'canvas-confetti';
 
 export default function ReceiverExperiencePage() {
   const { currentGift } = useGiftBuilderStore();
   const [showLock, setShowLock] = useState<boolean>(currentGift.midnightDrop?.enabled || false);
-  const [showConstellation, setShowConstellation] = useState(true);
-  const [reactions, setReactions] = useState<string[]>(['❤️', '🥹', '💀']);
+  const [showConstellation, setShowConstellation] = useState(false);
+  const [reactions, setReactions] = useState<string[]>(['❤️', '🥹', '🕵️']);
   const [copiedLink, setCopiedLink] = useState(false);
 
-  const theme = THEME_REGISTRY[currentGift.themeId] || THEME_REGISTRY.midnight;
+  const theme = THEME_REGISTRY[currentGift.themeId] || THEME_REGISTRY.secret;
+
+  const isAnonymous = currentGift.anonymousConfig?.enabled || currentGift.familiarity === 'dont_know_name';
+  const displayTitle = isAnonymous
+    ? 'Someone has been watching...'
+    : currentGift.receiverName || 'Someone Special';
 
   const handleSendReaction = (emoji: string) => {
     triggerHaptic('medium');
@@ -41,7 +49,7 @@ export default function ReceiverExperiencePage() {
     triggerHaptic('success');
     const shareText = encodeURIComponent(
       currentGift.whatsappShareText ||
-        `Yo ${currentGift.receiverName}, I made something for you 👀 Don't open this around other people 😂👇 https://birthday-self-theta.vercel.app/g/${currentGift.id}`
+        `Someone wants to tell you something 👀 Don't ask questions. Just open this 👇 https://birthday-self-theta.vercel.app/g/${currentGift.id}`
     );
     window.open(`https://api.whatsapp.com/send?text=${shareText}`, '_blank');
   };
@@ -57,7 +65,7 @@ export default function ReceiverExperiencePage() {
   if (showLock) {
     return (
       <MidnightDropLock
-        receiverName={currentGift.receiverName}
+        receiverName={currentGift.receiverName || 'Someone Special'}
         onUnlock={() => setShowLock(false)}
       />
     );
@@ -66,7 +74,7 @@ export default function ReceiverExperiencePage() {
   if (showConstellation) {
     return (
       <ConstellationIntro
-        receiverName={currentGift.receiverName}
+        receiverName={displayTitle}
         onComplete={() => setShowConstellation(false)}
       />
     );
@@ -86,30 +94,58 @@ export default function ReceiverExperiencePage() {
       </div>
 
       <div className="flex min-h-screen flex-col items-center px-4 py-16 text-slate-100 max-w-4xl mx-auto w-full space-y-16">
-        {/* Conversational Intro Banner */}
+        {/* Conversational Digital Object Intro Header */}
         <div className="text-center space-y-3 pt-6">
-          <span className="inline-block rounded-full bg-pink-500/20 border border-pink-400/40 px-4 py-1.5 text-xs font-bold text-pink-300 backdrop-blur-md">
-            {currentGift.vibe === 'roast' || currentGift.vibe === 'unhinged'
-              ? 'WARNING: emotional damage ahead 💀'
-              : currentGift.vibe === 'romantic'
-              ? "okay… this one's for you ❤️"
-              : 'someone has something to tell you 👀'}
+          <span className="inline-block rounded-full bg-sky-500/20 border border-sky-400/40 px-4 py-1.5 text-xs font-bold text-sky-300 backdrop-blur-md">
+            {isAnonymous
+              ? 'Someone has been noticing the little things 🕵️'
+              : currentGift.intent === 'crush'
+              ? "okay… this is embarrassing 👀"
+              : currentGift.intent === 'what_are_we'
+              ? "what are we? 🫠"
+              : 'someone made an interactive story for you ✨'}
           </span>
           <h1 className="font-serif text-4xl sm:text-7xl font-bold text-white leading-tight">
-            {currentGift.receiverName}
+            {displayTitle}
           </h1>
-          <p className="text-sm text-slate-300 font-medium">Created with love by {currentGift.senderName}</p>
+          {!isAnonymous && currentGift.senderName && (
+            <p className="text-sm text-slate-300 font-medium">From {currentGift.senderName}</p>
+          )}
         </div>
+
+        {/* Anonymous Mystery Flow (If enabled) */}
+        {isAnonymous && currentGift.anonymousConfig && (
+          <div className="w-full">
+            <AnonymousMysteryFlow
+              config={currentGift.anonymousConfig}
+              senderName={currentGift.senderName}
+            />
+          </div>
+        )}
+
+        {/* Situationship Quiz (If what_are_we intent) */}
+        {(currentGift.intent === 'what_are_we' || currentGift.situationshipCards?.length) && (
+          <div className="w-full">
+            <SituationshipQuiz cards={currentGift.situationshipCards} />
+          </div>
+        )}
+
+        {/* Group Chat Council */}
+        {currentGift.groupChatVote && (
+          <div className="w-full">
+            <GroupChatCouncil vote={currentGift.groupChatVote} />
+          </div>
+        )}
 
         {/* Spotify Gen-Z Player */}
         <div className="w-full">
           <SpotifyGenZPlayer songTitle={currentGift.songTitle} artistName={currentGift.artistName} />
         </div>
 
-        {/* Birthday Roast Section */}
+        {/* Birthday Roast Section (If roast intent) */}
         {currentGift.roast?.enabled && (
           <div className="w-full">
-            <BirthdayRoastSection roast={currentGift.roast} receiverName={currentGift.receiverName} />
+            <BirthdayRoastSection roast={currentGift.roast} receiverName={displayTitle} />
           </div>
         )}
 
@@ -118,15 +154,10 @@ export default function ReceiverExperiencePage() {
           <StoryProgressStream memories={currentGift.memories} />
         </div>
 
-        {/* Interactive Birthday Cake */}
-        <div className="w-full">
-          <InteractiveCake receiverName={currentGift.receiverName} />
-        </div>
-
-        {/* Chapter 1: Scrapbook Polaroid Gallery */}
+        {/* Chapter 1: Memory Wall */}
         <div className="w-full space-y-8 text-center">
           <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold text-amber-200 backdrop-blur-md">
-            <Sparkles className="h-4 w-4 text-amber-300" /> Chapter 1: Memory Wall 📸
+            <Sparkles className="h-4 w-4 text-amber-300" /> Shared Moments 📸
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
@@ -141,22 +172,22 @@ export default function ReceiverExperiencePage() {
           <MemoryMap memories={currentGift.memories} />
         </div>
 
-        {/* Chapter 3: Sealed Envelope */}
+        {/* Chapter 3: Sealed Envelope Note */}
         <div className="w-full">
           <InteractiveEnvelope
-            senderName={currentGift.senderName}
-            receiverName={currentGift.receiverName}
-            message={currentGift.notes[0]?.message || 'Your boring birthday text era is over.'}
+            senderName={currentGift.senderName || 'Someone who cares'}
+            receiverName={displayTitle}
+            message={currentGift.notes[0]?.message || 'I wasn\'t planning on saying this. Then I kept thinking about you. So here we are.'}
           />
         </div>
 
         {/* Real-time Reaction Stream */}
         <div className="flex flex-col items-center gap-3 pt-4">
           <p className="text-xs font-bold uppercase tracking-wider text-slate-300">
-            Send Live Reaction to {currentGift.senderName}
+            Send Live Reaction
           </p>
           <div className="flex items-center gap-3">
-            {['❤️', '🥹', '😂', '💀', '✨'].map((emoji) => (
+            {['❤️', '🥹', '😂', '💀', '🕵️'].map((emoji) => (
               <button
                 key={emoji}
                 onClick={() => handleSendReaction(emoji)}
@@ -170,7 +201,7 @@ export default function ReceiverExperiencePage() {
 
         {/* WhatsApp Share Card */}
         <div className="w-full max-w-md rounded-3xl bg-slate-900/90 p-6 border border-white/15 text-center flex flex-col items-center gap-4 shadow-2xl">
-          <h4 className="font-serif text-lg font-bold text-white">Send the Surprise</h4>
+          <h4 className="font-serif text-lg font-bold text-white">Send this to them 👀</h4>
           <button
             onClick={handleWhatsAppShare}
             className="flex items-center justify-center gap-2 rounded-full bg-emerald-600 px-6 py-3 text-sm font-bold text-white shadow-xl hover:bg-emerald-500 w-full min-h-[44px]"
@@ -189,16 +220,16 @@ export default function ReceiverExperiencePage() {
 
         {/* Viral Loop Footer */}
         <div className="text-center pt-16 pb-12 space-y-4 border-t border-white/10 w-full">
-          <p className="font-serif text-2xl sm:text-3xl italic text-pink-300">
-            &quot;Not a birthday wish. A whole experience.&quot;
+          <p className="font-serif text-2xl sm:text-3xl italic text-sky-300">
+            &quot;Say something without saying it.&quot;
           </p>
           <p className="text-xs text-slate-400">
-            Want to make someone feel this special?
+            Want to make someone feel something?
           </p>
           <Link href="/express" className="inline-block">
-            <button className="flex items-center gap-2 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 px-6 py-3 text-xs font-bold text-white shadow-lg hover:scale-105 transition-transform min-h-[44px]">
+            <button className="flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-indigo-600 px-6 py-3 text-xs font-bold text-white shadow-lg hover:scale-105 transition-transform min-h-[44px]">
               <Wand2 className="h-4 w-4" />
-              Make Your Own Surprise ✨
+              Create your own →
             </button>
           </Link>
         </div>

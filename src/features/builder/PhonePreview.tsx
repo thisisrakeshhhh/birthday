@@ -7,7 +7,7 @@ import { Sparkles, MapPin, Heart, Music } from 'lucide-react';
 
 export const PhonePreview: React.FC = () => {
   const { currentGift } = useGiftBuilderStore();
-  const theme = THEME_REGISTRY[currentGift.themeId] || THEME_REGISTRY.cute;
+  const theme = THEME_REGISTRY[currentGift.themeId] || THEME_REGISTRY.secret;
 
   return (
     <div className="relative mx-auto w-full max-w-[320px] aspect-[9/18] rounded-[48px] border-[10px] border-slate-900 bg-slate-950 p-2 shadow-2xl overflow-hidden select-none">

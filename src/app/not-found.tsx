@@ -9,7 +9,7 @@ import { Sparkles, Home } from 'lucide-react';
 
 export default function NotFoundPage() {
   return (
-    <AuroraBackground themeId="cute">
+    <AuroraBackground themeId="secret">
       <div className="flex min-h-screen flex-col items-center justify-center p-6 text-center text-slate-100 select-none">
         <motion.div
           animate={{ y: [-15, 15, -15], rotate: [-4, 4, -4] }}

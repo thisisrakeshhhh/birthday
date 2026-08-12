@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useGiftBuilderStore } from '@/features/builder/store';
@@ -9,7 +9,7 @@ import { MagneticButton } from '@/components/ui/MagneticButton';
 import { PhonePreview } from '@/features/builder/PhonePreview';
 import { AVATAR_PAIRS } from '@/features/themes/avatars';
 import { RelationshipCategory, VibeCategory, MediaMode } from '@/types/gift';
-import { Wand2, Sparkles, ArrowRight, ShieldCheck, Camera, Sparkle, Check, Lock } from 'lucide-react';
+import { Wand2, Sparkles, ArrowRight, ShieldCheck, Camera, Check, Plus, Trash2, Upload } from 'lucide-react';
 import { triggerHaptic } from '@/lib/utils';
 
 const RELATIONSHIPS: Array<{ id: RelationshipCategory; label: string; icon: string }> = [
@@ -42,11 +42,43 @@ export default function ExpressModePage() {
     setVibe,
     setMediaMode,
     setAvatarPairId,
-    setFunnyMemory,
-    setLoveDetail,
+    addMemory,
+    removeMemory,
     generateWithAiDirector,
     isAiGenerating,
   } = useGiftBuilderStore();
+
+  const [newPhotoUrl, setNewPhotoUrl] = useState('');
+  const [newPhotoCaption, setNewPhotoCaption] = useState('');
+
+  const handleAddPhoto = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newPhotoUrl) return;
+    triggerHaptic('medium');
+    addMemory({
+      type: 'image',
+      url: newPhotoUrl,
+      caption: newPhotoCaption || 'Unforgettable moment',
+      date: new Date().toISOString().split('T')[0],
+      location: { name: 'Special Place' },
+    });
+    setNewPhotoUrl('');
+    setNewPhotoCaption('');
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      triggerHaptic('medium');
+      const blobUrl = URL.createObjectURL(file);
+      addMemory({
+        type: 'image',
+        url: blobUrl,
+        caption: file.name.replace(/\.[^/.]+$/, ''),
+        date: new Date().toISOString().split('T')[0],
+      });
+    }
+  };
 
   const handleAiBuild = () => {
     triggerHaptic('heavy');
@@ -153,6 +185,68 @@ export default function ExpressModePage() {
                       >
                         {pair.name}
                       </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Real Photo Upload Section if Photos Mode */}
+              {currentGift.mediaMode === 'photos' && (
+                <div className="space-y-3 p-4 rounded-2xl bg-white/5 border border-white/10">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-bold uppercase tracking-wider text-pink-300 flex items-center gap-1.5">
+                      <Camera className="h-4 w-4 text-pink-400" /> Upload Memory Photos ({currentGift.memories.length})
+                    </label>
+                    <label className="cursor-pointer text-[11px] font-bold text-pink-300 bg-pink-500/20 px-3 py-1 rounded-full border border-pink-400/40 hover:bg-pink-500/30">
+                      <Upload className="h-3 w-3 inline mr-1" /> Choose File
+                      <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
+                    </label>
+                  </div>
+
+                  <form onSubmit={handleAddPhoto} className="flex flex-col gap-2">
+                    <input
+                      type="url"
+                      value={newPhotoUrl}
+                      onChange={(e) => setNewPhotoUrl(e.target.value)}
+                      placeholder="Or paste Photo URL (Unsplash, Imgur...)"
+                      className="w-full rounded-xl bg-slate-900/80 px-3.5 py-2 text-xs text-white border border-white/20 focus:border-pink-400 focus:outline-none min-h-[44px]"
+                    />
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={newPhotoCaption}
+                        onChange={(e) => setNewPhotoCaption(e.target.value)}
+                        placeholder="Memory caption (e.g. Paris coffee date ✨)"
+                        className="flex-1 rounded-xl bg-slate-900/80 px-3.5 py-2 text-xs text-white border border-white/20 focus:border-pink-400 focus:outline-none min-h-[44px]"
+                      />
+                      <button
+                        type="submit"
+                        className="rounded-xl bg-pink-500 px-4 py-2 text-xs font-bold text-white shadow-md hover:bg-pink-600 shrink-0 flex items-center gap-1 min-h-[44px]"
+                      >
+                        <Plus className="h-4 w-4" /> Add
+                      </button>
+                    </div>
+                  </form>
+
+                  {/* Uploaded Photos List */}
+                  <div className="flex flex-col gap-2 max-h-48 overflow-y-auto pr-1">
+                    {currentGift.memories.map((mem) => (
+                      <div
+                        key={mem.id}
+                        className="flex items-center justify-between p-2 rounded-xl bg-slate-900/70 border border-white/10 text-xs"
+                      >
+                        <div className="flex items-center gap-2 min-w-0">
+                          <img src={mem.url} alt="" className="h-8 w-8 rounded-lg object-cover shrink-0" />
+                          <span className="truncate font-medium text-slate-200">{mem.caption}</span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeMemory(mem.id)}
+                          className="text-red-400 hover:text-red-300 p-1 min-h-[44px] min-w-[44px] flex items-center justify-center shrink-0"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
                     ))}
                   </div>
                 </div>

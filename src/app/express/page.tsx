@@ -121,7 +121,7 @@ export default function ExpressWizardPage() {
   };
 
   return (
-    <AuroraBackground themeId={currentGift.themeId}>
+    <AuroraBackground themeId="midnight">
       <div className="flex min-h-screen flex-col items-center p-4 sm:p-6 pt-8 pb-24 max-w-6xl mx-auto w-full">
         {/* Header Bar */}
         <div className="flex w-full items-center justify-between mb-6">

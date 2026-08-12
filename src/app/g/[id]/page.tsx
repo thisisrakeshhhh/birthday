@@ -79,7 +79,7 @@ export default function ReceiverExperiencePage() {
   }
 
   return (
-    <AuroraBackground themeId={currentGift.themeId}>
+    <AuroraBackground themeId="midnight">
       {/* Floating Header Actions */}
       <div className="fixed top-4 right-4 z-40 flex items-center gap-2">
         <button

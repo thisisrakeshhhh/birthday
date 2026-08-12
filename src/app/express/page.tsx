@@ -520,12 +520,26 @@ export default function ExpressWizardPage() {
             </div>
           </div>
 
-          {/* Sticky Live Phone Mockup */}
-          <div className="lg:col-span-5 flex flex-col items-center">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-pink-300 mb-2">
-              Live Phone Sync
-            </h3>
-            <PhonePreview />
+          {/* Sticky Live Phone Mockup (Desktop side-by-side / Mobile modal drawer) */}
+          <div className="lg:col-span-5 flex flex-col items-center w-full">
+            <div className="hidden lg:flex flex-col items-center w-full">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-pink-300 mb-2">
+                Live Phone Sync
+              </h3>
+              <PhonePreview />
+            </div>
+
+            {/* Mobile View Preview Drawer Toggle */}
+            <div className="lg:hidden w-full text-center mt-4">
+              <details className="group">
+                <summary className="inline-flex items-center gap-2 rounded-full bg-slate-900 border border-white/20 px-5 py-2.5 text-xs font-bold text-pink-300 shadow-xl cursor-pointer list-none select-none min-h-[48px]">
+                  <span>Preview Live Phone Sync 📱</span>
+                </summary>
+                <div className="mt-4 flex flex-col items-center justify-center p-2 rounded-3xl bg-slate-950/90 border border-white/20 shadow-2xl">
+                  <PhonePreview />
+                </div>
+              </details>
+            </div>
           </div>
         </div>
       </div>

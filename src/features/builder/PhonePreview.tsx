@@ -16,7 +16,7 @@ export const PhonePreview: React.FC = () => {
 
       {/* Screen Viewport */}
       <div
-        className={`h-full w-full rounded-[36px] bg-gradient-to-br ${theme.colors.bgGradient} overflow-y-auto p-4 pt-10 text-slate-100 flex flex-col items-center gap-4 relative transition-colors duration-500`}
+        className={`h-full w-full rounded-[36px] bg-gradient-to-br ${theme.colors.gradient} overflow-y-auto p-4 pt-10 text-slate-100 flex flex-col items-center gap-4 relative transition-colors duration-500`}
       >
         {/* Header Title */}
         <div className="text-center">

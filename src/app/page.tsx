@@ -7,21 +7,15 @@ import { AuroraBackground } from '@/components/ui/AuroraBackground';
 import { MagneticButton } from '@/components/ui/MagneticButton';
 import { PhonePreview } from '@/features/builder/PhonePreview';
 import { ScrapbookPolaroid } from '@/features/receiver/ScrapbookPolaroid';
-import { MemoryItem, OccasionType, RelationshipCategory, VibeCategory } from '@/types/gift';
+import { MemoryItem, VibeCategory } from '@/types/gift';
 import {
   Sparkles,
   Wand2,
   Gift,
   Heart,
-  Star,
   Play,
-  ArrowRight,
   CheckCircle2,
-  Flame,
   Skull,
-  Lock,
-  MessageCircle,
-  Share2,
   Crown,
 } from 'lucide-react';
 import { triggerHaptic } from '@/lib/utils';
@@ -32,7 +26,7 @@ const LANDING_MEMORIES: MemoryItem[] = [
     type: 'image',
     url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop',
     caption: 'Our first Paris trip ☕✨',
-    roastCaption: 'Attempting to look aesthetic before spilling coffee 💀',
+    insideJokeAi: 'Attempting to look aesthetic before spilling coffee 💀',
     date: '2023-06-14',
     location: { name: 'Paris', year: '2023' },
     rotation: -4,
@@ -43,7 +37,7 @@ const LANDING_MEMORIES: MemoryItem[] = [
     type: 'image',
     url: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&auto=format&fit=crop',
     caption: 'Sunset laughs at the beach 🌅💛',
-    roastCaption: '0 survival instincts detected in this photo 🌊😂',
+    insideJokeAi: '0 survival instincts detected in this photo 🌊😂',
     date: '2023-08-20',
     location: { name: 'Goa', year: '2023' },
     rotation: 6,
@@ -54,23 +48,12 @@ const LANDING_MEMORIES: MemoryItem[] = [
     type: 'image',
     url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop',
     caption: 'Starry night celebration 🌌🎂',
-    roastCaption: 'Main character energy loading... 👑✨',
+    insideJokeAi: 'Main character energy loading... 👑✨',
     date: '2024-01-01',
     location: { name: 'Home', year: '2024' },
     rotation: -2,
     tapeColor: '#38BDF8',
   },
-];
-
-const VIBES: Array<{ id: VibeCategory; label: string; icon: string }> = [
-  { id: 'roast', label: 'Roast 💀', icon: '💀' },
-  { id: 'emotional', label: 'Emotional 😭', icon: '😭' },
-  { id: 'unhinged', label: 'Unhinged 😂', icon: '😂' },
-  { id: 'romantic', label: 'Romantic ❤️', icon: '❤️' },
-  { id: 'bro_code', label: 'Bro Code 🗿', icon: '🗿' },
-  { id: 'delulu', label: 'Delulu 🥀', icon: '🥀' },
-  { id: 'main_character', label: 'Main Character ✨', icon: '✨' },
-  { id: 'wholesome', label: 'Wholesome 🫶', icon: '🫶' },
 ];
 
 export default function LandingPage() {
@@ -99,7 +82,7 @@ export default function LandingPage() {
           </a>
           <Link href="/express">
             <MagneticButton variant="gold" className="py-2 px-5 text-sm text-slate-950 font-bold">
-              Make One Free ✨
+              Make one for free ✨
             </MagneticButton>
           </Link>
         </div>
@@ -117,14 +100,14 @@ export default function LandingPage() {
           <span>Your boring birthday text era is over.</span>
         </motion.div>
 
-        {/* Primary Gen-Z Tagline */}
+        {/* Primary Conversational Tagline */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           className="font-serif text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight text-white max-w-5xl leading-[1.1] mb-6 drop-shadow-2xl"
         >
-          Your &apos;Happy Birthday ❤️&apos; text{' '}
+          Your &apos;happy birthday ❤️&apos; text{' '}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-300 to-amber-300 drop-shadow-lg">
             could never.
           </span>
@@ -136,7 +119,7 @@ export default function LandingPage() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-lg sm:text-2xl text-slate-200 max-w-2xl font-sans font-medium mb-10 leading-relaxed drop-shadow-md"
         >
-          Not a birthday wish. A whole experience. Turn photos, memories, music and inside jokes into a surprise they&apos;ll actually remember.
+          Make them a tiny internet universe instead. Turn photos, memories, music and inside jokes into a surprise they&apos;ll actually remember.
         </motion.p>
 
         {/* CTAs */}
@@ -147,15 +130,15 @@ export default function LandingPage() {
           className="flex flex-col sm:flex-row items-center gap-4"
         >
           <Link href="/express">
-            <MagneticButton variant="gold" className="px-8 py-4 text-lg">
+            <MagneticButton variant="gold" className="px-8 py-4 text-lg font-bold text-slate-950">
               <Wand2 className="h-5 w-5 text-slate-950" />
-              Make One Free ✨
+              Make one for free ✨
             </MagneticButton>
           </Link>
           <Link href="/g/gift_demo">
             <MagneticButton variant="glass" className="px-8 py-4 text-lg">
               <Play className="h-5 w-5 text-pink-400 fill-pink-400" />
-              See an Example 👀
+              Show me something insane 👀
             </MagneticButton>
           </Link>
         </motion.div>
@@ -183,8 +166,8 @@ export default function LandingPage() {
           <h2 className="font-serif text-3xl sm:text-5xl font-bold text-white mt-2">
             How It Works
           </h2>
-          <p className="text-slate-400 text-sm mt-2">
-            Create a cinematic birthday link in under 90 seconds.
+          <p className="text-slate-300 text-sm mt-2 font-medium">
+            Create a tiny internet universe in under 90 seconds.
           </p>
         </div>
 
@@ -240,55 +223,13 @@ export default function LandingPage() {
           <h2 className="font-serif text-3xl sm:text-5xl font-bold text-white leading-tight">
             Roast Your Birthday Person 💀
           </h2>
-          <p className="text-slate-300 mt-4 leading-relaxed">
-            Upload 3-5 photos. Gemini AI generates a hilarious, unhinged birthday roast. Starts with: <span className="font-bold text-amber-200">&quot;Okay... we&apos;ve reviewed the evidence.&quot;</span> and ends with <span className="font-bold text-pink-300">&quot;Okay okay... we love you ❤️&quot;</span>
+          <p className="text-slate-300 mt-4 leading-relaxed font-medium">
+            Upload 3-5 photos. Gemini AI generates a hilarious, unhinged birthday roast. Starts with: <span className="font-bold text-amber-200">&quot;Okay... we&apos;ve reviewed the evidence. 💀&quot;</span> and ends with <span className="font-bold text-pink-300">&quot;Okay okay... we love you ❤️&quot;</span>
           </p>
-
-          <div className="mt-8 flex flex-col gap-3">
-            <div className="flex items-center gap-3 p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-200 font-medium">
-              <span className="text-xl">📸</span> Exhibit #1: Making decisions that concern a government investigation.
-            </div>
-            <div className="flex items-center gap-3 p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-200 font-medium">
-              <span className="text-xl">🌊</span> Exhibit #2: Zero survival instincts, 100% confidence.
-            </div>
-          </div>
         </div>
 
         <div className="flex justify-center">
           <PhonePreview />
-        </div>
-      </section>
-
-      {/* Social Proof & Realistic Quotes */}
-      <section className="py-24 px-6 max-w-6xl mx-auto w-full text-center">
-        <span className="text-xs font-bold uppercase tracking-widest text-pink-400">
-          Real Reactions
-        </span>
-        <h2 className="font-serif text-3xl sm:text-5xl font-bold text-white mt-2 mb-12">
-          Built for people who are tired of boring birthday texts.
-        </h2>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-left">
-          <div className="rounded-3xl bg-white/5 p-6 border border-white/10">
-            <p className="font-serif text-lg font-bold text-pink-300 mb-2">
-              &quot;bro this actually made me cry 😭&quot;
-            </p>
-            <p className="text-xs text-slate-400">— Sent to Best Friend on WhatsApp</p>
-          </div>
-
-          <div className="rounded-3xl bg-white/5 p-6 border border-white/10">
-            <p className="font-serif text-lg font-bold text-amber-300 mb-2">
-              &quot;HOW DID YOU MAKE THIS&quot;
-            </p>
-            <p className="text-xs text-slate-400">— Partner reaction after 3D gift unboxing</p>
-          </div>
-
-          <div className="rounded-3xl bg-white/5 p-6 border border-white/10">
-            <p className="font-serif text-lg font-bold text-purple-300 mb-2">
-              &quot;okay this is actually insane&quot;
-            </p>
-            <p className="text-xs text-slate-400">— Reaction to Constellation Star reveal</p>
-          </div>
         </div>
       </section>
 
@@ -300,7 +241,7 @@ export default function LandingPage() {
         <h2 className="font-serif text-3xl sm:text-5xl font-bold text-white mt-2 mb-4">
           Choose Your Birthday Experience
         </h2>
-        <p className="text-slate-300 text-sm max-w-md mx-auto mb-12">
+        <p className="text-slate-300 text-sm max-w-md mx-auto mb-12 font-medium">
           Start creating right now for free. Upgrade to Premium for ₹9 launch price while in beta!
         </p>
 
@@ -312,14 +253,14 @@ export default function LandingPage() {
                 <h3 className="text-2xl font-bold text-white">FREE Experience</h3>
                 <span className="text-xs font-bold text-slate-400 line-through">₹499 value</span>
               </div>
-              <p className="text-xs text-slate-400 mt-1">Make them smile in 60 seconds.</p>
+              <p className="text-xs text-slate-300 mt-1">Make them smile in 60 seconds.</p>
 
               <div className="my-6">
                 <span className="text-5xl font-serif font-bold text-white">₹0</span>
                 <span className="text-xs text-slate-400"> / free forever</span>
               </div>
 
-              <ul className="space-y-3 text-xs text-slate-300">
+              <ul className="space-y-3 text-xs text-slate-300 font-medium">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" /> 5 Memory Photos
                 </li>
@@ -339,13 +280,13 @@ export default function LandingPage() {
             </div>
 
             <Link href="/express" className="mt-8">
-              <MagneticButton variant="secondary" className="w-full text-sm">
-                Make One Free ✨
+              <MagneticButton variant="secondary" className="w-full text-sm font-bold">
+                Make one for free ✨
               </MagneticButton>
             </Link>
           </div>
 
-          {/* PREMIUM MAGIC (₹9 LAUNCH OFFER) - VISUALLY DOMINANT */}
+          {/* PREMIUM MAGIC (₹9 LAUNCH OFFER) */}
           <div className="rounded-3xl bg-gradient-to-b from-pink-500/25 via-purple-600/20 to-slate-950 p-8 border-2 border-pink-400 flex flex-col justify-between relative shadow-2xl shadow-pink-500/30 scale-102">
             <span className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-amber-400 via-pink-500 to-purple-600 px-5 py-1 text-xs font-bold uppercase tracking-wider text-slate-950 shadow-lg">
               🔥 Launch Offer · ₹9 Only
@@ -367,12 +308,15 @@ export default function LandingPage() {
                 <span className="text-xs text-slate-300 font-medium">beta launch pricing</span>
               </div>
 
-              <ul className="space-y-2.5 text-xs text-slate-200">
+              <ul className="space-y-2.5 text-xs text-slate-200 font-medium">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-pink-400 shrink-0" /> EVERYTHING IN FREE +
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-pink-400 shrink-0" /> Unlimited Photos & Voice Notes
+                  <CheckCircle2 className="h-4 w-4 text-pink-400 shrink-0" /> Instagram Story Progression Stream
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-pink-400 shrink-0" /> Spotify Birthday Soundtrack Player 🎵
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-pink-400 shrink-0" /> AI Birthday Letter & AI Roast Mode 💀
@@ -383,17 +327,11 @@ export default function LandingPage() {
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-pink-400 shrink-0" /> Interactive Cake & Blow-Out Candles 🎂
                 </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-pink-400 shrink-0" /> Midnight Drop Lock Countdown 🔐
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-pink-400 shrink-0" /> 3D Gift Opening & Remove Branding
-                </li>
               </ul>
             </div>
 
             <Link href="/express" className="mt-8">
-              <MagneticButton variant="gold" className="w-full text-sm">
+              <MagneticButton variant="gold" className="w-full text-sm font-bold text-slate-950">
                 Unlock Premium Magic for ₹9 ✨
               </MagneticButton>
             </Link>
@@ -402,7 +340,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t border-white/10 text-center text-xs text-slate-500">
+      <footer className="py-12 border-t border-white/10 text-center text-xs text-slate-400 font-medium">
         <p>Made with ❤️ by MemoryBloom. Not a birthday wish. A whole experience.</p>
       </footer>
     </AuroraBackground>

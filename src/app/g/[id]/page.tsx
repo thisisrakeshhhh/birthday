@@ -11,8 +11,10 @@ import { MemoryMap } from '@/features/receiver/MemoryMap';
 import { BirthdayRoastSection } from '@/features/receiver/BirthdayRoastSection';
 import { InteractiveCake } from '@/features/receiver/InteractiveCake';
 import { MidnightDropLock } from '@/features/receiver/MidnightDropLock';
+import { StoryProgressStream } from '@/features/receiver/StoryProgressStream';
+import { SpotifyGenZPlayer } from '@/features/receiver/SpotifyGenZPlayer';
 import { THEME_REGISTRY } from '@/features/themes/tokens';
-import { Sparkles, Music, Heart, MessageCircle, Share2, Copy, Check, Wand2 } from 'lucide-react';
+import { Sparkles, Music, Heart, MessageCircle, Copy, Check, Wand2 } from 'lucide-react';
 import { triggerHaptic } from '@/lib/utils';
 import confetti from 'canvas-confetti';
 
@@ -20,11 +22,10 @@ export default function ReceiverExperiencePage() {
   const { currentGift } = useGiftBuilderStore();
   const [showLock, setShowLock] = useState<boolean>(currentGift.midnightDrop?.enabled || false);
   const [showConstellation, setShowConstellation] = useState(true);
-  const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const [reactions, setReactions] = useState<string[]>(['❤️', '🥹', '💀']);
   const [copiedLink, setCopiedLink] = useState(false);
 
-  const theme = THEME_REGISTRY[currentGift.themeId] || THEME_REGISTRY.soft;
+  const theme = THEME_REGISTRY[currentGift.themeId] || THEME_REGISTRY.midnight;
 
   const handleSendReaction = (emoji: string) => {
     triggerHaptic('medium');
@@ -73,21 +74,8 @@ export default function ReceiverExperiencePage() {
 
   return (
     <AuroraBackground themeId={currentGift.themeId}>
-      {/* Floating Header Audio & WhatsApp Share */}
+      {/* Floating Header WhatsApp Share */}
       <div className="fixed top-4 right-4 z-40 flex items-center gap-2">
-        <button
-          onClick={() => {
-            triggerHaptic('light');
-            setIsPlayingMusic(!isPlayingMusic);
-          }}
-          className="flex items-center gap-2 rounded-full border border-white/20 bg-slate-950/70 backdrop-blur-xl px-4 py-2 text-xs font-bold text-white shadow-lg min-h-[44px]"
-        >
-          <Music className={`h-4 w-4 ${isPlayingMusic ? 'animate-spin text-pink-400' : 'text-slate-400'}`} />
-          <span className="hidden sm:inline">
-            {isPlayingMusic ? 'Music Playing 🎶' : 'Play Soundtrack'}
-          </span>
-        </button>
-
         <button
           onClick={handleWhatsAppShare}
           className="flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-2 text-xs font-bold text-white shadow-lg border border-emerald-400/40 hover:bg-emerald-500 transition-colors min-h-[44px]"
@@ -97,34 +85,48 @@ export default function ReceiverExperiencePage() {
         </button>
       </div>
 
-      <div className="flex min-h-screen flex-col items-center px-4 py-16 text-slate-100 max-w-4xl mx-auto w-full space-y-20">
-        {/* Title Header */}
+      <div className="flex min-h-screen flex-col items-center px-4 py-16 text-slate-100 max-w-4xl mx-auto w-full space-y-16">
+        {/* Conversational Intro Banner */}
         <div className="text-center space-y-3 pt-6">
-          <span className="inline-block rounded-full bg-pink-500/20 border border-pink-400/40 px-4 py-1 text-xs font-bold text-pink-300">
-            A Birthday Experience For You
+          <span className="inline-block rounded-full bg-pink-500/20 border border-pink-400/40 px-4 py-1.5 text-xs font-bold text-pink-300 backdrop-blur-md">
+            {currentGift.vibe === 'roast' || currentGift.vibe === 'unhinged'
+              ? 'WARNING: emotional damage ahead 💀'
+              : currentGift.vibe === 'romantic'
+              ? "okay… this one's for you ❤️"
+              : 'someone has something to tell you 👀'}
           </span>
           <h1 className="font-serif text-4xl sm:text-7xl font-bold text-white leading-tight">
             {currentGift.receiverName}
           </h1>
-          <p className="text-sm text-slate-300">Created with love by {currentGift.senderName}</p>
+          <p className="text-sm text-slate-300 font-medium">Created with love by {currentGift.senderName}</p>
         </div>
 
-        {/* Birthday Roast Section (If enabled or Roast vibe) */}
+        {/* Spotify Gen-Z Player */}
+        <div className="w-full">
+          <SpotifyGenZPlayer songTitle={currentGift.songTitle} artistName={currentGift.artistName} />
+        </div>
+
+        {/* Birthday Roast Section */}
         {currentGift.roast?.enabled && (
           <div className="w-full">
             <BirthdayRoastSection roast={currentGift.roast} receiverName={currentGift.receiverName} />
           </div>
         )}
 
-        {/* Interactive Cake & Candle Extinguishing */}
+        {/* Instagram Story Progress Reel */}
+        <div className="w-full">
+          <StoryProgressStream memories={currentGift.memories} />
+        </div>
+
+        {/* Interactive Birthday Cake */}
         <div className="w-full">
           <InteractiveCake receiverName={currentGift.receiverName} />
         </div>
 
-        {/* Chapter 1: Shared Memories */}
+        {/* Chapter 1: Scrapbook Polaroid Gallery */}
         <div className="w-full space-y-8 text-center">
           <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold text-amber-200 backdrop-blur-md">
-            <Sparkles className="h-4 w-4 text-amber-300" /> Chapter 1: Shared Memories
+            <Sparkles className="h-4 w-4 text-amber-300" /> Chapter 1: Memory Wall 📸
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
@@ -134,12 +136,12 @@ export default function ReceiverExperiencePage() {
           </div>
         </div>
 
-        {/* Chapter 2: Interactive Memory Map */}
+        {/* Chapter 2: Memory Map */}
         <div className="w-full">
           <MemoryMap memories={currentGift.memories} />
         </div>
 
-        {/* Chapter 3: Sealed Envelope Note */}
+        {/* Chapter 3: Sealed Envelope */}
         <div className="w-full">
           <InteractiveEnvelope
             senderName={currentGift.senderName}
@@ -149,7 +151,7 @@ export default function ReceiverExperiencePage() {
         </div>
 
         {/* Real-time Reaction Stream */}
-        <div className="flex flex-col items-center gap-3 pt-6">
+        <div className="flex flex-col items-center gap-3 pt-4">
           <p className="text-xs font-bold uppercase tracking-wider text-slate-300">
             Send Live Reaction to {currentGift.senderName}
           </p>
@@ -166,7 +168,7 @@ export default function ReceiverExperiencePage() {
           </div>
         </div>
 
-        {/* WhatsApp Sharing Bar */}
+        {/* WhatsApp Share Card */}
         <div className="w-full max-w-md rounded-3xl bg-slate-900/90 p-6 border border-white/15 text-center flex flex-col items-center gap-4 shadow-2xl">
           <h4 className="font-serif text-lg font-bold text-white">Send the Surprise</h4>
           <button

@@ -1,5 +1,12 @@
 export type ThemeId =
   | 'midnight'
+  | 'pink_crush'
+  | 'y2k'
+  | 'cherry_bomb'
+  | 'juicebox'
+  | 'cloudcore'
+  | 'toxic_bestie'
+  | 'emo'
   | 'scrapbook'
   | 'chaotic'
   | 'soft'
@@ -52,6 +59,7 @@ export type PlanType = 'free' | 'premium';
 export interface LocationTag {
   name: string;
   year?: string;
+  time?: string;
   coordinates?: { lat: number; lng: number };
 }
 
@@ -60,6 +68,10 @@ export interface MemoryItem {
   type: 'image' | 'video' | 'voice' | 'gif';
   url: string;
   caption?: string;
+  insideJokeAi?: string;
+  fileName?: string; // e.g. "IMG_2847.JPG"
+  likesCount?: number;
+  commentsCount?: number;
   roastCaption?: string;
   date?: string;
   location?: LocationTag;
@@ -78,23 +90,24 @@ export interface WrittenNote {
 
 export interface BirthdayRoast {
   enabled: boolean;
-  introText: string; // "Okay... we've reviewed the evidence."
+  introText: string;
   roastMemories: Array<{
     imageUrl: string;
     caption: string;
+    exhibitLabel?: string;
   }>;
-  outroText: string; // "Okay okay... we love you ❤️"
+  outroText: string;
 }
 
 export interface MidnightDropConfig {
   enabled: boolean;
-  unlockDate: string; // ISO string e.g. "2026-08-15T00:00:00Z"
+  unlockDate: string;
   isLocked: boolean;
 }
 
 export interface SceneConfig {
   id: string;
-  type: 'intro' | 'constellation' | 'roast' | 'story_chapters' | 'cake' | 'memory_map' | 'envelope' | 'vinyl_music' | 'finale';
+  type: 'intro' | 'constellation' | 'roast' | 'story_chapters' | 'instagram_story' | 'cake' | 'memory_map' | 'envelope' | 'spotify_music' | 'finale';
   title?: string;
   subtitle?: string;
   durationMs?: number;
@@ -113,12 +126,15 @@ export interface DigitalGift {
   aiPrompt?: string;
   personality?: string;
   funnyMemory?: string;
+  insideJokeInput?: string;
   loveDetail?: string;
   memories: MemoryItem[];
   notes: WrittenNote[];
   roast?: BirthdayRoast;
   midnightDrop?: MidnightDropConfig;
   spotifyUrl?: string;
+  songTitle?: string;
+  artistName?: string;
   customAudioUrl?: string;
   voiceNoteUrl?: string;
   videoUrl?: string;
@@ -138,14 +154,15 @@ export interface AIStoryRequest {
   senderName: string;
   personality?: string;
   funnyMemory?: string;
+  insideJokeInput?: string;
   loveDetail?: string;
-  insideJoke?: string;
 }
 
 export interface AIStoryResponse {
   themeId: ThemeId;
-  openingText: string;
+  conversationalIntro: string;
   generatedLetter: string;
+  insideJokeRoast: string;
   closingMessage: string;
   roastIntro: string;
   roastOutro: string;

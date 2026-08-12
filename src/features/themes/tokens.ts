@@ -34,6 +34,262 @@ export interface ThemeTokens {
 }
 
 export const THEME_REGISTRY: Record<ThemeId, ThemeTokens> = {
+  midnight: {
+    id: 'midnight',
+    name: 'MIDNIGHT 🌌',
+    tagline: 'Dark cinematic atmosphere, glowing stars & neon pulses.',
+    colors: {
+      bgGradient: 'from-slate-950 via-purple-950 to-slate-900',
+      cardBg: 'rgba(23, 15, 38, 0.75)',
+      cardBorder: 'rgba(168, 85, 247, 0.4)',
+      textPrimary: '#F3E8FF',
+      textSecondary: '#C084FC',
+      accent: '#C084FC',
+      accentGlow: '0 0 30px rgba(192, 132, 252, 0.6)',
+      badgeBg: 'rgba(192, 132, 252, 0.2)',
+    },
+    particles: {
+      type: 'stars',
+      primaryColor: '#E9D5FF',
+      secondaryColor: '#38BDF8',
+      density: 45,
+    },
+    cursor: {
+      glowColor: '#C084FC',
+      trailEmoji: '✨',
+    },
+    typography: {
+      headingFont: 'Clash Display',
+      handwritingFont: 'Caveat',
+    },
+    audio: {
+      ambientPreset: 'cosmic_synth',
+    },
+  },
+  scrapbook: {
+    id: 'scrapbook',
+    name: 'SCRAPBOOK 📜',
+    tagline: 'Polaroid frames, paper grain textures, washi tape & stamps.',
+    colors: {
+      bgGradient: 'from-orange-100 via-amber-100 to-rose-100',
+      cardBg: 'rgba(255, 251, 235, 0.95)',
+      cardBorder: 'rgba(245, 158, 11, 0.4)',
+      textPrimary: '#78350F',
+      textSecondary: '#D97706',
+      accent: '#F59E0B',
+      accentGlow: '0 0 20px rgba(245, 158, 11, 0.4)',
+      badgeBg: 'rgba(245, 158, 11, 0.2)',
+    },
+    particles: {
+      type: 'hearts',
+      primaryColor: '#F59E0B',
+      secondaryColor: '#F472B6',
+      density: 30,
+    },
+    cursor: {
+      glowColor: '#F59E0B',
+      trailEmoji: '🎀',
+    },
+    typography: {
+      headingFont: 'Satoshi',
+      handwritingFont: 'Caveat',
+    },
+    audio: {
+      ambientPreset: 'paper_rustle',
+    },
+  },
+  chaotic: {
+    id: 'chaotic',
+    name: 'CHAOTIC 💀',
+    tagline: 'Unhinged memes, vibrant neon contrasts & pure energy.',
+    colors: {
+      bgGradient: 'from-gray-950 via-zinc-900 to-amber-950',
+      cardBg: 'rgba(39, 39, 42, 0.85)',
+      cardBorder: 'rgba(245, 158, 11, 0.5)',
+      textPrimary: '#FDE047',
+      textSecondary: '#F97316',
+      accent: '#F59E0B',
+      accentGlow: '0 0 30px rgba(245, 158, 11, 0.7)',
+      badgeBg: 'rgba(245, 158, 11, 0.25)',
+    },
+    particles: {
+      type: 'fireflies',
+      primaryColor: '#FACC15',
+      secondaryColor: '#EF4444',
+      density: 45,
+    },
+    cursor: {
+      glowColor: '#F59E0B',
+      trailEmoji: '💀',
+    },
+    typography: {
+      headingFont: 'Clash Display',
+      handwritingFont: 'Caveat',
+    },
+    audio: {
+      ambientPreset: 'lofi_chaos',
+    },
+  },
+  soft: {
+    id: 'soft',
+    name: 'SOFT ☁️',
+    tagline: 'Warm pastels, serene gradient clouds & sweet elegance.',
+    colors: {
+      bgGradient: 'from-rose-100 via-purple-50 to-sky-100',
+      cardBg: 'rgba(255, 255, 255, 0.85)',
+      cardBorder: 'rgba(244, 114, 182, 0.35)',
+      textPrimary: '#881337',
+      textSecondary: '#E11D48',
+      accent: '#F472B6',
+      accentGlow: '0 0 20px rgba(244, 114, 182, 0.4)',
+      badgeBg: 'rgba(244, 114, 182, 0.15)',
+    },
+    particles: {
+      type: 'bubbles',
+      primaryColor: '#F472B6',
+      secondaryColor: '#C084FC',
+      density: 25,
+    },
+    cursor: {
+      glowColor: '#F472B6',
+      trailEmoji: '☁️',
+    },
+    typography: {
+      headingFont: 'Satoshi',
+      handwritingFont: 'Sacramento',
+    },
+    audio: {
+      ambientPreset: 'lofi_piano',
+    },
+  },
+  main_character: {
+    id: 'main_character',
+    name: 'MAIN CHARACTER ✨',
+    tagline: 'High-energy golden aura, spotlight shimmer & main character vibes.',
+    colors: {
+      bgGradient: 'from-amber-950 via-purple-950 to-stone-950',
+      cardBg: 'rgba(24, 24, 27, 0.85)',
+      cardBorder: 'rgba(234, 179, 8, 0.5)',
+      textPrimary: '#FEF08A',
+      textSecondary: '#EAB308',
+      accent: '#EAB308',
+      accentGlow: '0 0 35px rgba(234, 179, 8, 0.6)',
+      badgeBg: 'rgba(234, 179, 8, 0.25)',
+    },
+    particles: {
+      type: 'stars',
+      primaryColor: '#FACC15',
+      secondaryColor: '#FEF08A',
+      density: 40,
+    },
+    cursor: {
+      glowColor: '#EAB308',
+      trailEmoji: '👑',
+    },
+    typography: {
+      headingFont: 'Clash Display',
+      handwritingFont: 'Sacramento',
+    },
+    audio: {
+      ambientPreset: 'grand_orchestral',
+    },
+  },
+  romantic: {
+    id: 'romantic',
+    name: 'ROMANTIC ❤️',
+    tagline: 'Intimate deep rose velvet, floating hearts & candlelight warmth.',
+    colors: {
+      bgGradient: 'from-rose-950 via-red-950 to-pink-950',
+      cardBg: 'rgba(30, 10, 20, 0.8)',
+      cardBorder: 'rgba(244, 63, 94, 0.4)',
+      textPrimary: '#FFE4E6',
+      textSecondary: '#FB7185',
+      accent: '#F43F5E',
+      accentGlow: '0 0 30px rgba(244, 63, 94, 0.5)',
+      badgeBg: 'rgba(244, 63, 94, 0.2)',
+    },
+    particles: {
+      type: 'hearts',
+      primaryColor: '#FB7185',
+      secondaryColor: '#FDA4AF',
+      density: 35,
+    },
+    cursor: {
+      glowColor: '#F43F5E',
+      trailEmoji: '❤️',
+    },
+    typography: {
+      headingFont: 'Clash Display',
+      handwritingFont: 'Sacramento',
+    },
+    audio: {
+      ambientPreset: 'harp_breeze',
+    },
+  },
+  bro_code: {
+    id: 'bro_code',
+    name: 'BRO CODE 🗿',
+    tagline: 'Dark obsidian, bold typography, funny memes & bro energy.',
+    colors: {
+      bgGradient: 'from-slate-950 via-zinc-900 to-stone-950',
+      cardBg: 'rgba(15, 23, 42, 0.85)',
+      cardBorder: 'rgba(148, 163, 184, 0.4)',
+      textPrimary: '#F1F5F9',
+      textSecondary: '#94A3B8',
+      accent: '#38BDF8',
+      accentGlow: '0 0 25px rgba(56, 189, 248, 0.5)',
+      badgeBg: 'rgba(56, 189, 248, 0.2)',
+    },
+    particles: {
+      type: 'confetti',
+      primaryColor: '#38BDF8',
+      secondaryColor: '#F59E0B',
+      density: 30,
+    },
+    cursor: {
+      glowColor: '#38BDF8',
+      trailEmoji: '🗿',
+    },
+    typography: {
+      headingFont: 'General Sans',
+      handwritingFont: 'Caveat',
+    },
+    audio: {
+      ambientPreset: 'vinyl_crackle',
+    },
+  },
+  delulu: {
+    id: 'delulu',
+    name: 'DELULU 🥀',
+    tagline: 'Dreamy magenta, butterfly magic & unapologetic romance.',
+    colors: {
+      bgGradient: 'from-pink-950 via-purple-950 to-fuchsia-950',
+      cardBg: 'rgba(38, 15, 38, 0.8)',
+      cardBorder: 'rgba(236, 72, 153, 0.4)',
+      textPrimary: '#FCE7F3',
+      textSecondary: '#F472B6',
+      accent: '#EC4899',
+      accentGlow: '0 0 30px rgba(236, 72, 153, 0.5)',
+      badgeBg: 'rgba(236, 72, 153, 0.2)',
+    },
+    particles: {
+      type: 'sakura',
+      primaryColor: '#F472B6',
+      secondaryColor: '#E879F9',
+      density: 40,
+    },
+    cursor: {
+      glowColor: '#EC4899',
+      trailEmoji: '🦋',
+    },
+    typography: {
+      headingFont: 'Satoshi',
+      handwritingFont: 'Caveat',
+    },
+    audio: {
+      ambientPreset: 'synthwave_pulse',
+    },
+  },
   galaxy: {
     id: 'galaxy',
     name: 'Galaxy Dreams',
@@ -320,38 +576,6 @@ export const THEME_REGISTRY: Record<ThemeId, ThemeTokens> = {
     },
     audio: {
       ambientPreset: 'synthwave_pulse',
-    },
-  },
-  scrapbook: {
-    id: 'scrapbook',
-    name: 'Craft Paper & Tape',
-    tagline: 'Authentic physical paper textures, washi tape, and cute stickers.',
-    colors: {
-      bgGradient: 'from-orange-100 via-amber-100 to-rose-100',
-      cardBg: 'rgba(255, 251, 235, 0.95)',
-      cardBorder: 'rgba(245, 158, 11, 0.4)',
-      textPrimary: '#78350F',
-      textSecondary: '#D97706',
-      accent: '#F59E0B',
-      accentGlow: '0 0 20px rgba(245, 158, 11, 0.4)',
-      badgeBg: 'rgba(245, 158, 11, 0.2)',
-    },
-    particles: {
-      type: 'hearts',
-      primaryColor: '#F59E0B',
-      secondaryColor: '#F472B6',
-      density: 30,
-    },
-    cursor: {
-      glowColor: '#F59E0B',
-      trailEmoji: '🎀',
-    },
-    typography: {
-      headingFont: 'Satoshi',
-      handwritingFont: 'Caveat',
-    },
-    audio: {
-      ambientPreset: 'paper_rustle',
     },
   },
 };

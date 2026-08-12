@@ -1,6 +1,17 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { DigitalGift, EmotionCategory, MemoryItem, OccasionType, ThemeId, WrittenNote } from '@/types/gift';
+import {
+  DigitalGift,
+  MemoryItem,
+  OccasionType,
+  ThemeId,
+  WrittenNote,
+  RelationshipCategory,
+  VibeCategory,
+  PlanType,
+  BirthdayRoast,
+  MidnightDropConfig,
+} from '@/types/gift';
 import { runAIMemoryDirector } from '@/features/ai/director';
 
 const INITIAL_MEMORIES: MemoryItem[] = [
@@ -9,59 +20,124 @@ const INITIAL_MEMORIES: MemoryItem[] = [
     type: 'image',
     url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop',
     caption: 'That unforgettable coffee date ☕✨',
+    roastCaption: 'Attempting to look aesthetic before spilling coffee on shirt 💀',
     date: '2023-06-14',
     location: { name: 'Paris, France', year: '2023' },
     rotation: -4,
     tapeColor: '#F472B6',
-    chapter: 'We Met',
+    chapter: 'The Evidence 📸',
   },
   {
     id: 'mem_2',
     type: 'image',
     url: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&auto=format&fit=crop',
     caption: 'Sunset laughs at the beach 🌅💛',
+    roastCaption: '0 survival instincts detected in this photo 🌊😂',
     date: '2023-08-20',
     location: { name: 'Goa Coast', year: '2023' },
     rotation: 6,
     tapeColor: '#F59E0B',
-    chapter: 'Crazy Days',
+    chapter: 'Unfiltered Moments 🍿',
   },
   {
     id: 'mem_3',
     type: 'image',
     url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop',
     caption: 'Starry night celebration 🌌🎂',
+    roastCaption: 'Main character energy loading... 👑✨',
     date: '2024-01-01',
     location: { name: 'Home Sweet Home', year: '2024' },
     rotation: -2,
     tapeColor: '#38BDF8',
-    chapter: 'Best Memories',
+    chapter: 'Why We Love You ❤️',
   },
 ];
 
 const INITIAL_NOTE: WrittenNote = {
   id: 'note_1',
   author: 'Alex',
-  message: 'Some people deserve more than a gift. They deserve a memory they will never forget. Happy Birthday Emily ❤️',
+  message: 'Your boring birthday text era is over. Happy Birthday Emily ❤️',
   handwritingFont: 'Caveat',
   paperTexture: 'parchment',
+};
+
+const DEFAULT_GIFT: DigitalGift = {
+  id: 'gift_demo',
+  receiverName: 'Emily ❤️',
+  senderName: 'Alex',
+  occasion: 'birthday',
+  relationship: 'best_friend',
+  vibe: 'roast',
+  plan: 'free',
+  themeId: 'midnight',
+  aiPrompt: 'She loves dogs, sister, turning 21, purple aesthetics.',
+  personality: 'unhinged & funny',
+  funnyMemory: 'we got lost at 2 AM looking for tacos',
+  loveDetail: 'how you always listen when I need a friend',
+  memories: INITIAL_MEMORIES,
+  notes: [INITIAL_NOTE],
+  roast: {
+    enabled: true,
+    introText: "Okay... we've reviewed the evidence. 💀",
+    roastMemories: [
+      {
+        imageUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop',
+        caption: 'Making decisions that would concern a government investigation 💀',
+      },
+      {
+        imageUrl: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&auto=format&fit=crop',
+        caption: 'Zero survival instincts, 100% confidence 😂',
+      },
+    ],
+    outroText: 'Okay okay... we love you ❤️',
+  },
+  midnightDrop: {
+    enabled: false,
+    unlockDate: new Date(Date.now() + 86400000).toISOString(),
+    isLocked: false,
+  },
+  spotifyUrl: 'https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT',
+  createdAt: new Date().toISOString(),
+  isWrapped: false,
+  viewsCount: 142,
+  replayCount: 38,
+  reactions: [
+    { emoji: '❤️', timestamp: '2 mins ago' },
+    { emoji: '🥹', timestamp: ' Just now' },
+    { emoji: '💀', timestamp: ' Just now' },
+  ],
+  whatsappShareText: "Yo Emily, I made a birthday surprise for you 👀 Don't open this around other people 😂👇",
+  scenes: [
+    { id: 'sc_1', type: 'intro' },
+    { id: 'sc_2', type: 'constellation' },
+    { id: 'sc_3', type: 'roast' },
+    { id: 'sc_4', type: 'cake' },
+    { id: 'sc_5', type: 'story_chapters' },
+    { id: 'sc_6', type: 'memory_map' },
+    { id: 'sc_7', type: 'envelope' },
+    { id: 'sc_8', type: 'finale' },
+  ],
 };
 
 interface BuilderState {
   currentGift: DigitalGift;
   currentStep: number;
   isAiGenerating: boolean;
-  aiPromptInput: string;
   setReceiverName: (name: string) => void;
   setSenderName: (name: string) => void;
+  setRelationship: (rel: RelationshipCategory) => void;
+  setVibe: (vibe: VibeCategory) => void;
+  setPlan: (plan: PlanType) => void;
   setOccasion: (occ: OccasionType) => void;
-  setEmotion: (emo: EmotionCategory) => void;
   setTheme: (themeId: ThemeId) => void;
+  setPersonality: (val: string) => void;
+  setFunnyMemory: (val: string) => void;
+  setLoveDetail: (val: string) => void;
+  setMidnightDrop: (enabled: boolean, dateStr?: string) => void;
   addMemory: (mem: Omit<MemoryItem, 'id'>) => void;
   removeMemory: (id: string) => void;
   reorderMemories: (memories: MemoryItem[]) => void;
-  updateNote: (message: string, font?: WrittenNote['handwritingFont']) => void;
-  setAiPromptInput: (input: string) => void;
+  updateNote: (message: string, handwritingFont?: WrittenNote['handwritingFont']) => void;
   generateWithAiDirector: () => void;
   nextStep: () => void;
   prevStep: () => void;
@@ -69,66 +145,53 @@ interface BuilderState {
   resetGift: () => void;
 }
 
-const DEFAULT_GIFT: DigitalGift = {
-  id: 'gift_demo',
-  receiverName: 'Emily ❤️',
-  senderName: 'Alex',
-  occasion: 'birthday',
-  emotion: 'loved',
-  themeId: 'cute',
-  aiPrompt: 'She loves dogs, sister, turning 21, purple aesthetics.',
-  memories: INITIAL_MEMORIES,
-  notes: [INITIAL_NOTE],
-  spotifyUrl: 'https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT',
-  createdAt: new Date().toISOString(),
-  isWrapped: false,
-  viewsCount: 12,
-  replayCount: 4,
-  reactions: [
-    { emoji: '❤️', timestamp: '2 mins ago' },
-    { emoji: '🥹', timestamp: ' Just now' },
-  ],
-  scenes: [
-    { id: 'sc_1', type: 'intro' },
-    { id: 'sc_2', type: 'constellation' },
-    { id: 'sc_3', type: 'story_chapters' },
-    { id: 'sc_4', type: 'memory_map' },
-    { id: 'sc_5', type: 'envelope' },
-    { id: 'sc_6', type: 'finale' },
-  ],
-};
-
 export const useGiftBuilderStore = create<BuilderState>()(
   persist(
     (set, get) => ({
       currentGift: DEFAULT_GIFT,
       currentStep: 1,
       isAiGenerating: false,
-      aiPromptInput: '',
 
       setReceiverName: (receiverName) =>
-        set((state) => ({
-          currentGift: { ...state.currentGift, receiverName },
-        })),
+        set((state) => ({ currentGift: { ...state.currentGift, receiverName } })),
 
       setSenderName: (senderName) =>
-        set((state) => ({
-          currentGift: { ...state.currentGift, senderName },
-        })),
+        set((state) => ({ currentGift: { ...state.currentGift, senderName } })),
+
+      setRelationship: (relationship) =>
+        set((state) => ({ currentGift: { ...state.currentGift, relationship } })),
+
+      setVibe: (vibe) =>
+        set((state) => ({ currentGift: { ...state.currentGift, vibe } })),
+
+      setPlan: (plan) =>
+        set((state) => ({ currentGift: { ...state.currentGift, plan } })),
 
       setOccasion: (occasion) =>
-        set((state) => ({
-          currentGift: { ...state.currentGift, occasion },
-        })),
-
-      setEmotion: (emotion) =>
-        set((state) => ({
-          currentGift: { ...state.currentGift, emotion },
-        })),
+        set((state) => ({ currentGift: { ...state.currentGift, occasion } })),
 
       setTheme: (themeId) =>
+        set((state) => ({ currentGift: { ...state.currentGift, themeId } })),
+
+      setPersonality: (personality) =>
+        set((state) => ({ currentGift: { ...state.currentGift, personality } })),
+
+      setFunnyMemory: (funnyMemory) =>
+        set((state) => ({ currentGift: { ...state.currentGift, funnyMemory } })),
+
+      setLoveDetail: (loveDetail) =>
+        set((state) => ({ currentGift: { ...state.currentGift, loveDetail } })),
+
+      setMidnightDrop: (enabled, dateStr) =>
         set((state) => ({
-          currentGift: { ...state.currentGift, themeId },
+          currentGift: {
+            ...state.currentGift,
+            midnightDrop: {
+              enabled,
+              unlockDate: dateStr || new Date(Date.now() + 86400000).toISOString(),
+              isLocked: enabled,
+            },
+          },
         })),
 
       addMemory: (memData) =>
@@ -136,7 +199,7 @@ export const useGiftBuilderStore = create<BuilderState>()(
           const newMem: MemoryItem = {
             ...memData,
             id: `mem_${Date.now()}`,
-            rotation: (Math.random() * 12 - 6),
+            rotation: Math.random() * 12 - 6,
           };
           return {
             currentGift: {
@@ -175,19 +238,19 @@ export const useGiftBuilderStore = create<BuilderState>()(
           };
         }),
 
-      setAiPromptInput: (aiPromptInput) => set({ aiPromptInput }),
-
       generateWithAiDirector: () => {
         const state = get();
         set({ isAiGenerating: true });
-        
+
         setTimeout(() => {
           const res = runAIMemoryDirector({
-            relationship: state.aiPromptInput,
+            relationship: state.currentGift.relationship,
+            vibe: state.currentGift.vibe,
             receiverName: state.currentGift.receiverName,
-            occasion: state.currentGift.occasion,
-            emotion: state.currentGift.emotion,
-            keyDetails: state.aiPromptInput,
+            senderName: state.currentGift.senderName,
+            personality: state.currentGift.personality,
+            funnyMemory: state.currentGift.funnyMemory,
+            loveDetail: state.currentGift.loveDetail,
           });
 
           set((s) => ({
@@ -195,6 +258,16 @@ export const useGiftBuilderStore = create<BuilderState>()(
             currentGift: {
               ...s.currentGift,
               themeId: res.themeId,
+              whatsappShareText: res.whatsappShareText,
+              roast: {
+                enabled: s.currentGift.vibe === 'roast' || s.currentGift.vibe === 'unhinged',
+                introText: res.roastIntro,
+                roastMemories: s.currentGift.memories.map((m) => ({
+                  imageUrl: m.url,
+                  caption: m.roastCaption || m.caption || 'Unfiltered decision 💀',
+                })),
+                outroText: res.roastOutro,
+              },
               notes: [
                 {
                   id: `note_ai_${Date.now()}`,
@@ -205,7 +278,7 @@ export const useGiftBuilderStore = create<BuilderState>()(
               ],
             },
           }));
-        }, 1200);
+        }, 1000);
       },
 
       nextStep: () => set((state) => ({ currentStep: Math.min(state.currentStep + 1, 5) })),
@@ -216,11 +289,10 @@ export const useGiftBuilderStore = create<BuilderState>()(
         set({
           currentGift: DEFAULT_GIFT,
           currentStep: 1,
-          aiPromptInput: '',
         }),
     }),
     {
-      name: 'memorybloom_draft_store',
+      name: 'memorybloom_draft_store_v2',
       storage: createJSONStorage(() => localStorage),
     }
   )

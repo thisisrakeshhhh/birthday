@@ -1,4 +1,12 @@
 export type ThemeId =
+  | 'midnight'
+  | 'scrapbook'
+  | 'chaotic'
+  | 'soft'
+  | 'main_character'
+  | 'romantic'
+  | 'bro_code'
+  | 'delulu'
   | 'galaxy'
   | 'anime'
   | 'cute'
@@ -7,8 +15,7 @@ export type ThemeId =
   | 'nature'
   | 'flowers'
   | 'retro'
-  | 'neon'
-  | 'scrapbook';
+  | 'neon';
 
 export type OccasionType =
   | 'birthday'
@@ -21,7 +28,26 @@ export type OccasionType =
   | 'valentines'
   | 'custom';
 
-export type EmotionCategory = 'loved' | 'happy' | 'emotional' | 'funny' | 'nostalgic';
+export type RelationshipCategory =
+  | 'my_person'
+  | 'best_friend'
+  | 'my_menace'
+  | 'bro_sis'
+  | 'crush'
+  | 'bestie'
+  | 'someone_special';
+
+export type VibeCategory =
+  | 'emotional'
+  | 'unhinged'
+  | 'roast'
+  | 'wholesome'
+  | 'romantic'
+  | 'bro_code'
+  | 'main_character'
+  | 'delulu';
+
+export type PlanType = 'free' | 'premium';
 
 export interface LocationTag {
   name: string;
@@ -34,11 +60,12 @@ export interface MemoryItem {
   type: 'image' | 'video' | 'voice' | 'gif';
   url: string;
   caption?: string;
+  roastCaption?: string;
   date?: string;
   location?: LocationTag;
   rotation?: number; // Polaroid tilt degrees (-15 to 15)
   tapeColor?: string;
-  chapter?: 'We Met' | 'Crazy Days' | 'Best Memories' | 'Today' | string;
+  chapter?: string;
 }
 
 export interface WrittenNote {
@@ -49,9 +76,25 @@ export interface WrittenNote {
   paperTexture?: 'parchment' | 'notebook' | 'pink_paper' | 'gold_foil';
 }
 
+export interface BirthdayRoast {
+  enabled: boolean;
+  introText: string; // "Okay... we've reviewed the evidence."
+  roastMemories: Array<{
+    imageUrl: string;
+    caption: string;
+  }>;
+  outroText: string; // "Okay okay... we love you ❤️"
+}
+
+export interface MidnightDropConfig {
+  enabled: boolean;
+  unlockDate: string; // ISO string e.g. "2026-08-15T00:00:00Z"
+  isLocked: boolean;
+}
+
 export interface SceneConfig {
   id: string;
-  type: 'intro' | 'constellation' | 'story_chapters' | 'memory_map' | 'envelope' | 'vinyl_music' | 'finale';
+  type: 'intro' | 'constellation' | 'roast' | 'story_chapters' | 'cake' | 'memory_map' | 'envelope' | 'vinyl_music' | 'finale';
   title?: string;
   subtitle?: string;
   durationMs?: number;
@@ -63,34 +106,49 @@ export interface DigitalGift {
   receiverName: string;
   senderName: string;
   occasion: OccasionType;
-  emotion: EmotionCategory;
+  relationship: RelationshipCategory;
+  vibe: VibeCategory;
+  plan: PlanType;
   themeId: ThemeId;
   aiPrompt?: string;
+  personality?: string;
+  funnyMemory?: string;
+  loveDetail?: string;
   memories: MemoryItem[];
   notes: WrittenNote[];
+  roast?: BirthdayRoast;
+  midnightDrop?: MidnightDropConfig;
   spotifyUrl?: string;
   customAudioUrl?: string;
-  unlockDate?: string; // Time Capsule lock ISO string
+  voiceNoteUrl?: string;
+  videoUrl?: string;
   scenes: SceneConfig[];
   createdAt: string;
   isWrapped: boolean;
   viewsCount: number;
   replayCount: number;
   reactions: Array<{ emoji: string; timestamp: string }>;
+  whatsappShareText?: string;
 }
 
 export interface AIStoryRequest {
-  relationship: string;
+  relationship: RelationshipCategory;
+  vibe: VibeCategory;
   receiverName: string;
-  occasion: OccasionType;
-  emotion: EmotionCategory;
-  keyDetails: string;
+  senderName: string;
+  personality?: string;
+  funnyMemory?: string;
+  loveDetail?: string;
+  insideJoke?: string;
 }
 
 export interface AIStoryResponse {
   themeId: ThemeId;
-  suggestedChapters: string[];
+  openingText: string;
   generatedLetter: string;
-  suggestedMusic: string;
-  suggestedPaletteName: string;
+  closingMessage: string;
+  roastIntro: string;
+  roastOutro: string;
+  whatsappShareText: string;
+  suggestedChapters: string[];
 }

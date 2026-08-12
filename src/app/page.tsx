@@ -7,7 +7,7 @@ import { AuroraBackground } from '@/components/ui/AuroraBackground';
 import { MagneticButton } from '@/components/ui/MagneticButton';
 import { PhonePreview } from '@/features/builder/PhonePreview';
 import { ScrapbookPolaroid } from '@/features/receiver/ScrapbookPolaroid';
-import { MemoryItem, OccasionType } from '@/types/gift';
+import { MemoryItem, OccasionType, RelationshipCategory, VibeCategory } from '@/types/gift';
 import {
   Sparkles,
   Wand2,
@@ -17,9 +17,12 @@ import {
   Play,
   ArrowRight,
   CheckCircle2,
-  MapPin,
-  Calendar,
-  Layers,
+  Flame,
+  Skull,
+  Lock,
+  MessageCircle,
+  Share2,
+  Crown,
 } from 'lucide-react';
 import { triggerHaptic } from '@/lib/utils';
 
@@ -29,6 +32,7 @@ const LANDING_MEMORIES: MemoryItem[] = [
     type: 'image',
     url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop',
     caption: 'Our first Paris trip ☕✨',
+    roastCaption: 'Attempting to look aesthetic before spilling coffee 💀',
     date: '2023-06-14',
     location: { name: 'Paris', year: '2023' },
     rotation: -4,
@@ -39,6 +43,7 @@ const LANDING_MEMORIES: MemoryItem[] = [
     type: 'image',
     url: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&auto=format&fit=crop',
     caption: 'Sunset laughs at the beach 🌅💛',
+    roastCaption: '0 survival instincts detected in this photo 🌊😂',
     date: '2023-08-20',
     location: { name: 'Goa', year: '2023' },
     rotation: 6,
@@ -49,6 +54,7 @@ const LANDING_MEMORIES: MemoryItem[] = [
     type: 'image',
     url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop',
     caption: 'Starry night celebration 🌌🎂',
+    roastCaption: 'Main character energy loading... 👑✨',
     date: '2024-01-01',
     location: { name: 'Home', year: '2024' },
     rotation: -2,
@@ -56,22 +62,22 @@ const LANDING_MEMORIES: MemoryItem[] = [
   },
 ];
 
-const OCCASIONS: Array<{ id: OccasionType; label: string; icon: string }> = [
-  { id: 'birthday', label: 'Birthday', icon: '🎂' },
-  { id: 'anniversary', label: 'Anniversary', icon: '💍' },
-  { id: 'proposal', label: 'Proposal', icon: '💖' },
-  { id: 'wedding', label: 'Wedding', icon: '💒' },
-  { id: 'friendship', label: 'Friendship', icon: '🤝' },
-  { id: 'graduation', label: 'Graduation', icon: '🎓' },
-  { id: 'mothers_day', label: "Mother's Day", icon: '👩‍👧' },
-  { id: 'valentines', label: 'Valentine', icon: '💌' },
+const VIBES: Array<{ id: VibeCategory; label: string; icon: string }> = [
+  { id: 'roast', label: 'Roast 💀', icon: '💀' },
+  { id: 'emotional', label: 'Emotional 😭', icon: '😭' },
+  { id: 'unhinged', label: 'Unhinged 😂', icon: '😂' },
+  { id: 'romantic', label: 'Romantic ❤️', icon: '❤️' },
+  { id: 'bro_code', label: 'Bro Code 🗿', icon: '🗿' },
+  { id: 'delulu', label: 'Delulu 🥀', icon: '🥀' },
+  { id: 'main_character', label: 'Main Character ✨', icon: '✨' },
+  { id: 'wholesome', label: 'Wholesome 🫶', icon: '🫶' },
 ];
 
 export default function LandingPage() {
-  const [selectedOccasion, setSelectedOccasion] = useState<OccasionType>('birthday');
+  const [selectedVibe, setSelectedVibe] = useState<VibeCategory>('roast');
 
   return (
-    <AuroraBackground themeId="cute">
+    <AuroraBackground themeId="soft">
       {/* Navigation Header */}
       <header className="fixed top-0 left-0 right-0 z-40 px-6 py-4 backdrop-blur-md bg-slate-950/40 border-b border-white/10 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 font-serif text-xl font-bold text-white tracking-tight">
@@ -81,19 +87,19 @@ export default function LandingPage() {
           <span>MemoryBloom</span>
         </Link>
 
-        <div className="hidden sm:flex items-center gap-4 text-sm font-medium">
+        <div className="hidden sm:flex items-center gap-6 text-sm font-medium">
           <a href="#how-it-works" className="text-slate-300 hover:text-white transition-colors">
             How It Works
           </a>
-          <a href="#features" className="text-slate-300 hover:text-white transition-colors">
-            Surprises
+          <a href="#roast" className="text-slate-300 hover:text-white transition-colors">
+            Birthday Roast 💀
           </a>
           <a href="#pricing" className="text-slate-300 hover:text-white transition-colors">
             Pricing
           </a>
-          <Link href="/create">
-            <MagneticButton variant="primary" className="py-2 px-5 text-sm">
-              Create My Gift
+          <Link href="/express">
+            <MagneticButton variant="gold" className="py-2 px-5 text-sm">
+              Make One Free ✨
             </MagneticButton>
           </Link>
         </div>
@@ -101,42 +107,26 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <section className="relative flex min-h-screen flex-col items-center justify-center px-6 pt-24 text-center select-none">
-        {/* Floating Balloons & Stars Deco */}
-        <motion.div
-          animate={{ y: [0, -20, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute top-28 left-8 text-4xl opacity-80 pointer-events-none hidden sm:block"
-        >
-          🎈
-        </motion.div>
-        <motion.div
-          animate={{ y: [0, 20, 0] }}
-          transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute top-36 right-12 text-4xl opacity-80 pointer-events-none hidden sm:block"
-        >
-          ✨
-        </motion.div>
-
-        {/* Badge */}
+        {/* Gen-Z Slogan Badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 rounded-full border border-pink-400/40 bg-pink-500/10 px-4 py-1.5 text-xs font-semibold text-pink-300 backdrop-blur-md mb-6"
+          className="inline-flex items-center gap-2 rounded-full border border-pink-400/40 bg-pink-500/10 px-4 py-1.5 text-xs font-bold text-pink-300 backdrop-blur-md mb-6"
         >
           <Sparkles className="h-4 w-4 text-pink-400 animate-spin" />
-          <span>Awwwards-Grade Gen-Z Digital Gifting</span>
+          <span>Your boring birthday text era is over.</span>
         </motion.div>
 
-        {/* Huge Emotional Typography */}
+        {/* Primary Gen-Z Tagline */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           className="font-serif text-4xl sm:text-7xl lg:text-8xl font-bold tracking-tight text-white max-w-5xl leading-[1.1] mb-6"
         >
-          Some people deserve{' '}
+          Your &apos;Happy Birthday ❤️&apos; text{' '}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-300 to-amber-300">
-            more than a gift.
+            could never.
           </span>
         </motion.h1>
 
@@ -144,12 +134,12 @@ export default function LandingPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-lg sm:text-2xl text-slate-300 max-w-2xl font-sans font-light mb-10"
+          className="text-lg sm:text-2xl text-slate-300 max-w-2xl font-sans font-light mb-10 leading-relaxed"
         >
-          They deserve a memory they&apos;ll never forget. Turn photos, letters, and music into a cinematic unboxing experience.
+          Not a birthday wish. A whole experience. Turn photos, memories, music and inside jokes into a surprise they&apos;ll actually remember.
         </motion.p>
 
-        {/* Primary Call to Action */}
+        {/* CTAs */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -158,28 +148,28 @@ export default function LandingPage() {
         >
           <Link href="/express">
             <MagneticButton variant="gold" className="px-8 py-4 text-lg">
-              <Wand2 className="h-5 w-5" />
-              Express AI Generator (2 mins)
+              <Wand2 className="h-5 w-5 text-slate-950" />
+              Make One Free ✨
             </MagneticButton>
           </Link>
-          <Link href="/create">
+          <Link href="/g/gift_demo">
             <MagneticButton variant="glass" className="px-8 py-4 text-lg">
-              <Gift className="h-5 w-5 text-pink-400" />
-              Creator Mode
+              <Play className="h-5 w-5 text-pink-400 fill-pink-400" />
+              See an Example 👀
             </MagneticButton>
           </Link>
         </motion.div>
 
-        {/* Floating Stickers & Micro Badges */}
-        <div className="mt-16 flex items-center gap-6 text-xs text-slate-400 font-medium">
-          <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="h-4 w-4 text-emerald-400" /> Constellation Name Reveal
+        {/* Viral Slogan Pills */}
+        <div className="mt-16 flex flex-wrap items-center justify-center gap-3 text-xs text-slate-300 font-medium">
+          <span className="rounded-full bg-white/10 px-3.5 py-1.5 border border-white/15">
+            ⚡ No app required
           </span>
-          <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="h-4 w-4 text-pink-400" /> Sealed Wax Envelope
+          <span className="rounded-full bg-white/10 px-3.5 py-1.5 border border-white/15">
+            💬 WhatsApp 1-tap share
           </span>
-          <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="h-4 w-4 text-amber-400" /> 3D Wrapping Ceremony
+          <span className="rounded-full bg-white/10 px-3.5 py-1.5 border border-white/15">
+            🥹 &quot;WAIT... YOU MADE THIS FOR ME?&quot;
           </span>
         </div>
       </section>
@@ -188,192 +178,223 @@ export default function LandingPage() {
       <section id="how-it-works" className="py-24 px-6 max-w-6xl mx-auto w-full">
         <div className="text-center mb-16">
           <span className="text-xs font-bold uppercase tracking-widest text-pink-400">
-            Step 1 of 5
+            4 Simple Steps
           </span>
           <h2 className="font-serif text-3xl sm:text-5xl font-bold text-white mt-2">
-            Choose the Occasion
+            How It Works
           </h2>
           <p className="text-slate-400 text-sm mt-2">
-            Tailors animations, background music, and emotional letter presets.
+            Create a cinematic birthday link in under 90 seconds.
           </p>
         </div>
 
-        {/* Occasions Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {OCCASIONS.map((occ) => (
-            <button
-              key={occ.id}
-              onClick={() => {
-                triggerHaptic('light');
-                setSelectedOccasion(occ.id);
-              }}
-              className={`flex flex-col items-center gap-3 p-5 rounded-2xl border transition-all text-center min-h-[44px] min-w-[44px] cursor-pointer ${
-                selectedOccasion === occ.id
-                  ? 'bg-gradient-to-b from-pink-500/20 to-purple-600/20 border-pink-400 shadow-xl shadow-pink-500/20 scale-105'
-                  : 'bg-white/5 border-white/10 hover:bg-white/10 text-slate-300'
-              }`}
-            >
-              <span className="text-4xl">{occ.icon}</span>
-              <span className="font-medium text-sm text-white">{occ.label}</span>
-            </button>
-          ))}
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
+          <div className="rounded-3xl bg-white/5 p-6 border border-white/10 flex flex-col items-center text-center">
+            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-pink-500/20 text-pink-300 font-bold text-xl mb-4 border border-pink-400/30">
+              1
+            </span>
+            <h3 className="font-serif text-lg font-bold text-white mb-1">Pick Their Vibe</h3>
+            <p className="text-xs text-slate-300">
+              Roast, Emotional, Unhinged, Romantic, Bro Code, or Delulu.
+            </p>
+          </div>
+
+          <div className="rounded-3xl bg-white/5 p-6 border border-white/10 flex flex-col items-center text-center">
+            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-500/20 text-amber-300 font-bold text-xl mb-4 border border-amber-400/30">
+              2
+            </span>
+            <h3 className="font-serif text-lg font-bold text-white mb-1">Add Memories</h3>
+            <p className="text-xs text-slate-300">
+              Upload 3–5 photos, inside jokes, and personal voice notes.
+            </p>
+          </div>
+
+          <div className="rounded-3xl bg-white/5 p-6 border border-white/10 flex flex-col items-center text-center">
+            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-purple-500/20 text-purple-300 font-bold text-xl mb-4 border border-purple-400/30">
+              3
+            </span>
+            <h3 className="font-serif text-lg font-bold text-white mb-1">We Make the Magic</h3>
+            <p className="text-xs text-slate-300">
+              Gemini Flash builds the letter, constellation reveal & 3D box.
+            </p>
+          </div>
+
+          <div className="rounded-3xl bg-white/5 p-6 border border-white/10 flex flex-col items-center text-center">
+            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-500/20 text-emerald-300 font-bold text-xl mb-4 border border-emerald-400/30">
+              4
+            </span>
+            <h3 className="font-serif text-lg font-bold text-white mb-1">Send the Link</h3>
+            <p className="text-xs text-slate-300">
+              Share on WhatsApp with 1 tap. Watch them react live.
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* Live Phone Preview & Scrapbook Section */}
-      <section id="features" className="py-24 px-6 max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      {/* Birthday Roast Feature Showcase */}
+      <section id="roast" className="py-24 px-6 max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div>
-          <span className="text-xs font-bold uppercase tracking-widest text-amber-400">
-            Scrapbook Engine & Live Phone Sync
-          </span>
-          <h2 className="font-serif text-3xl sm:text-5xl font-bold text-white mt-2 leading-tight">
-            Watch your gift come alive instantly.
+          <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-amber-400/10 px-3.5 py-1 text-xs font-bold text-amber-300 mb-4">
+            <Skull className="h-4 w-4" /> VIRAL FEATURE
+          </div>
+          <h2 className="font-serif text-3xl sm:text-5xl font-bold text-white leading-tight">
+            Roast Your Birthday Person 💀
           </h2>
           <p className="text-slate-300 mt-4 leading-relaxed">
-            Every photo becomes a tilted polaroid with taped edges, location tags, and handwritten notes. The sticky live phone mockup syncs every stroke in real time.
+            Upload 3-5 photos. Gemini AI generates a hilarious, unhinged birthday roast. Starts with: <span className="font-bold text-amber-200">&quot;Okay... we&apos;ve reviewed the evidence.&quot;</span> and ends with <span className="font-bold text-pink-300">&quot;Okay okay... we love you ❤️&quot;</span>
           </p>
 
-          <div className="mt-8 flex flex-col gap-4">
-            <div className="flex items-start gap-3 p-4 rounded-xl bg-white/5 border border-white/10">
-              <Sparkles className="h-6 w-6 text-pink-400 shrink-0 mt-1" />
-              <div>
-                <h4 className="font-bold text-white text-sm">Constellation Intro</h4>
-                <p className="text-xs text-slate-400">
-                  Starts with pitch-black sky connecting star lines to write the receiver&apos;s name.
-                </p>
-              </div>
+          <div className="mt-8 flex flex-col gap-3">
+            <div className="flex items-center gap-3 p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-200 font-medium">
+              <span className="text-xl">📸</span> Exhibit #1: Making decisions that concern a government investigation.
             </div>
-
-            <div className="flex items-start gap-3 p-4 rounded-xl bg-white/5 border border-white/10">
-              <Heart className="h-6 w-6 text-rose-400 shrink-0 mt-1" />
-              <div>
-                <h4 className="font-bold text-white text-sm">Interactive Sealed Envelope</h4>
-                <p className="text-xs text-slate-400">
-                  Receiver breaks the 3D wax seal and pulls the silk ribbon to reveal handwritten text.
-                </p>
-              </div>
+            <div className="flex items-center gap-3 p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-200 font-medium">
+              <span className="text-xl">🌊</span> Exhibit #2: Zero survival instincts, 100% confidence.
             </div>
           </div>
         </div>
 
-        {/* Live Mockup */}
         <div className="flex justify-center">
           <PhonePreview />
         </div>
       </section>
 
-      {/* Memory Collage Showcase */}
+      {/* Social Proof & Realistic Quotes */}
       <section className="py-24 px-6 max-w-6xl mx-auto w-full text-center">
-        <span className="text-xs font-bold uppercase tracking-widest text-purple-400">
-          Visual Storytelling
+        <span className="text-xs font-bold uppercase tracking-widest text-pink-400">
+          Real Reactions
         </span>
         <h2 className="font-serif text-3xl sm:text-5xl font-bold text-white mt-2 mb-12">
-          Layered Memories & Floating Polaroids
+          Built for people who are tired of boring birthday texts.
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 justify-items-center">
-          {LANDING_MEMORIES.map((mem, idx) => (
-            <ScrapbookPolaroid key={mem.id} memory={mem} index={idx} />
-          ))}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-left">
+          <div className="rounded-3xl bg-white/5 p-6 border border-white/10">
+            <p className="font-serif text-lg font-bold text-pink-300 mb-2">
+              &quot;bro this actually made me cry 😭&quot;
+            </p>
+            <p className="text-xs text-slate-400">— Sent to Best Friend on WhatsApp</p>
+          </div>
+
+          <div className="rounded-3xl bg-white/5 p-6 border border-white/10">
+            <p className="font-serif text-lg font-bold text-amber-300 mb-2">
+              &quot;HOW DID YOU MAKE THIS&quot;
+            </p>
+            <p className="text-xs text-slate-400">— Partner reaction after 3D gift unboxing</p>
+          </div>
+
+          <div className="rounded-3xl bg-white/5 p-6 border border-white/10">
+            <p className="font-serif text-lg font-bold text-purple-300 mb-2">
+              &quot;okay this is actually insane&quot;
+            </p>
+            <p className="text-xs text-slate-400">— Reaction to Constellation Star reveal</p>
+          </div>
         </div>
       </section>
 
-      {/* Pricing Cards */}
+      {/* Pricing Section (Free vs ₹9 Launch Offer) */}
       <section id="pricing" className="py-24 px-6 max-w-6xl mx-auto w-full text-center">
         <span className="text-xs font-bold uppercase tracking-widest text-pink-400">
-          Transparent Pricing
+          Unbeatable Acquisition Pricing
         </span>
-        <h2 className="font-serif text-3xl sm:text-5xl font-bold text-white mt-2 mb-12">
-          Choose Your Gift Experience
+        <h2 className="font-serif text-3xl sm:text-5xl font-bold text-white mt-2 mb-4">
+          Choose Your Birthday Experience
         </h2>
+        <p className="text-slate-300 text-sm max-w-md mx-auto mb-12">
+          Start creating right now for free. Upgrade to Premium for ₹9 launch price while in beta!
+        </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
-          {/* Starter */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left max-w-4xl mx-auto">
+          {/* FREE EXPERIENCE */}
           <div className="rounded-3xl bg-white/5 p-8 border border-white/10 flex flex-col justify-between">
             <div>
-              <h3 className="text-xl font-bold text-white">Starter</h3>
-              <p className="text-xs text-slate-400 mt-1">Perfect for simple birthday cards.</p>
-              <div className="my-6">
-                <span className="text-4xl font-serif font-bold text-white">$9.99</span>
-                <span className="text-xs text-slate-400"> / gift</span>
+              <div className="flex items-center justify-between">
+                <h3 className="text-2xl font-bold text-white">FREE Experience</h3>
+                <span className="text-xs font-bold text-slate-400 line-through">₹499 value</span>
               </div>
+              <p className="text-xs text-slate-400 mt-1">Make them smile in 60 seconds.</p>
+
+              <div className="my-6">
+                <span className="text-5xl font-serif font-bold text-white">₹0</span>
+                <span className="text-xs text-slate-400"> / free forever</span>
+              </div>
+
               <ul className="space-y-3 text-xs text-slate-300">
                 <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-pink-400" /> 1 Digital Gift Experience
+                  <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" /> 5 Memory Photos
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-pink-400" /> 10 Uploaded Polaroids
+                  <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" /> Personalized Birthday Message
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-pink-400" /> Standard Sealed Envelope
+                  <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" /> Background Music & 3 Themes
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" /> Basic Cinematic Reveal
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" /> 1-Tap WhatsApp Share Link
                 </li>
               </ul>
             </div>
-            <Link href="/create" className="mt-8">
-              <MagneticButton variant="secondary" className="w-full text-sm">
-                Get Started
-              </MagneticButton>
-            </Link>
-          </div>
 
-          {/* Premium (Popular) */}
-          <div className="rounded-3xl bg-gradient-to-b from-pink-500/20 via-purple-600/20 to-slate-950 p-8 border-2 border-pink-400 flex flex-col justify-between relative shadow-2xl shadow-pink-500/20">
-            <span className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 px-4 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
-              Most Popular
-            </span>
-            <div>
-              <h3 className="text-xl font-bold text-white">Premium Magic</h3>
-              <p className="text-xs text-slate-300 mt-1">Constellations, 3D wrapping & AI Director.</p>
-              <div className="my-6">
-                <span className="text-4xl font-serif font-bold text-white">$19.99</span>
-                <span className="text-xs text-slate-300"> / gift</span>
-              </div>
-              <ul className="space-y-3 text-xs text-slate-200">
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-pink-400" /> All 10 Dynamic Aesthetic Themes
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-pink-400" /> Constellation Name Reveal
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-pink-400" /> 3D Gift Wrapping Ceremony
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-pink-400" /> Memory Travel Map
-                </li>
-              </ul>
-            </div>
             <Link href="/express" className="mt-8">
-              <MagneticButton variant="primary" className="w-full text-sm">
-                Create Premium Gift
+              <MagneticButton variant="secondary" className="w-full text-sm">
+                Make One Free ✨
               </MagneticButton>
             </Link>
           </div>
 
-          {/* MemoryBloom+ Subscription */}
-          <div className="rounded-3xl bg-white/5 p-8 border border-white/10 flex flex-col justify-between">
+          {/* PREMIUM MAGIC (₹9 LAUNCH OFFER) - VISUALLY DOMINANT */}
+          <div className="rounded-3xl bg-gradient-to-b from-pink-500/25 via-purple-600/20 to-slate-950 p-8 border-2 border-pink-400 flex flex-col justify-between relative shadow-2xl shadow-pink-500/30 scale-102">
+            <span className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-amber-400 via-pink-500 to-purple-600 px-5 py-1 text-xs font-bold uppercase tracking-wider text-slate-950 shadow-lg">
+              🔥 Launch Offer · ₹9 Only
+            </span>
+
             <div>
-              <h3 className="text-xl font-bold text-amber-300">MemoryBloom+</h3>
-              <p className="text-xs text-slate-400 mt-1">Unlimited gifts & recurring access.</p>
-              <div className="my-6">
-                <span className="text-4xl font-serif font-bold text-white">$14.99</span>
-                <span className="text-xs text-slate-400"> / month</span>
+              <div className="flex items-center justify-between">
+                <h3 className="text-2xl font-bold text-white flex items-center gap-2">
+                  <Crown className="h-6 w-6 text-amber-300" /> PREMIUM MAGIC
+                </h3>
+                <span className="text-xs font-bold text-slate-400 line-through">₹1,599 value</span>
               </div>
-              <ul className="space-y-3 text-xs text-slate-300">
+              <p className="text-xs text-pink-300 mt-1 font-medium">
+                Make it unreasonably personal.
+              </p>
+
+              <div className="my-6 flex items-baseline gap-2">
+                <span className="text-6xl font-serif font-bold text-amber-300">₹9</span>
+                <span className="text-xs text-slate-300 font-medium">beta launch pricing</span>
+              </div>
+
+              <ul className="space-y-2.5 text-xs text-slate-200">
                 <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-amber-400" /> Unlimited Gifts & AI Stories
+                  <CheckCircle2 className="h-4 w-4 text-pink-400 shrink-0" /> EVERYTHING IN FREE +
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-amber-400" /> Time Capsule Locking
+                  <CheckCircle2 className="h-4 w-4 text-pink-400 shrink-0" /> Unlimited Photos & Voice Notes
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-amber-400" /> Printable Keepsake PDF & QR Code
+                  <CheckCircle2 className="h-4 w-4 text-pink-400 shrink-0" /> AI Birthday Letter & AI Roast Mode 💀
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-pink-400 shrink-0" /> Constellation Star Name Reveal ✨
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-pink-400 shrink-0" /> Interactive Cake & Blow-Out Candles 🎂
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-pink-400 shrink-0" /> Midnight Drop Lock Countdown 🔐
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-pink-400 shrink-0" /> 3D Gift Opening & Remove Branding
                 </li>
               </ul>
             </div>
-            <Link href="/create" className="mt-8">
+
+            <Link href="/express" className="mt-8">
               <MagneticButton variant="gold" className="w-full text-sm">
-                Subscribe to Plus
+                Unlock Premium Magic for ₹9 ✨
               </MagneticButton>
             </Link>
           </div>
@@ -382,7 +403,7 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="py-12 border-t border-white/10 text-center text-xs text-slate-500">
-        <p>Made with ❤️ by MemoryBloom. Turn memories into magic.</p>
+        <p>Made with ❤️ by MemoryBloom. Not a birthday wish. A whole experience.</p>
       </footer>
     </AuroraBackground>
   );
